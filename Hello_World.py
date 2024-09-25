@@ -22,4 +22,4 @@ w = MainWindow()
 app.exec()
 
 
-print("test")
+print("Jonh was here")
