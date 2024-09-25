@@ -1,3 +1,4 @@
+
 from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
 
 import sys
@@ -19,3 +20,6 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 w = MainWindow()
 app.exec()
+
+
+print("done")
