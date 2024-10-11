@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from application_window import ApplicationWindow  
 
-# Main Class QMainWindow to customize application's main window
+# Main Class QMainWindow to customize application's welcom window
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -181,10 +181,12 @@ class MainWindow(QMainWindow):
         self.app_window.show()
 
 
-# Create an instance of QApplication
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()  # Show the main window
+# Main function to run the application
+def main():
+    app = QApplication(sys.argv) # Create an instance of QApplication
+    window = MainWindow()
+    window.show()  # Show the main window
+    sys.exit(app.exec()) # Start the application's event loop
 
-# Start the application's event loop
-app.exec()
+if __name__ == "__main__":
+    main()
