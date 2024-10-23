@@ -21,11 +21,13 @@ class ApplicationWindow(QMainWindow):
         self.parameters_widget = self.create_parameters_widget()
         self.pacing_modes_widget = self.create_pacing_modes_widget()
         self.egram_widget = self.create_egram_widget()
+        self.connection_widget = self.create_connection()
 
         # Add each widget to the central stacked widget
         self.central_stack.addWidget(self.parameters_widget)
         self.central_stack.addWidget(self.pacing_modes_widget)
         self.central_stack.addWidget(self.egram_widget)
+        self.central_stack.addWidget(self.connection_widget)
 
         # Section: Toolbar (Remember to define a new toolbar when need a new Widget (which means window))
         # ---------------------------------
@@ -45,6 +47,10 @@ class ApplicationWindow(QMainWindow):
         egram_action = QAction("Electrogram", self)
         egram_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.egram_widget))
         toolbar.addAction(egram_action)
+
+        connection_action = QAction("Device Connection", self)
+        connection_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.connection_widget))
+        toolbar.addAction(connection_action)
 
     # Section: Parameters Widget
     # ---------------------------------
@@ -108,6 +114,55 @@ class ApplicationWindow(QMainWindow):
         # Set layout to the widget
         widget.setLayout(layout)
         return widget
+    
+    # Section: Device Connect Status Widget
+    # ---------------------------------
+    def create_connection(self):
+        # Create buttons for check connection status
+        self.connect_button = QPushButton("Check for Connect Status")
+        self.disconnect_button = QPushButton("Check for Disconnect Status")
+
+        # Set button size 
+        self.connect_button.setFixedSize(300, 60)
+        self.disconnect_button.setFixedSize(300, 60)
+
+        # Create a widget for displaying message of device connection status
+        widget = QWidget()
+        layout = QVBoxLayout()
+
+        # Add labels for the connection and disconnection messages
+        self.status_label = QLabel("DCM communication with PG: Disconnected")
+        self.status_label.setFont(QFont('Arial', 12))
+        self.status_label.setStyleSheet("color: red;")
+        layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Button layout 
+        layout.addWidget(self.connect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom)
+        layout.addWidget(self.disconnect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
+
+        # Add labels for checking connected device number/model
+        device_label = QLabel("The connected PACEMAKER device is: H00140")
+        device_label.setFont(QFont('Arial', 12))
+        layout.addWidget(device_label, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
+
+        # Connect the buttons to the appropriate slots
+        self.connect_button.clicked.connect(self.show_connected_message)
+        self.disconnect_button.clicked.connect(self.show_disconnected_message)
+
+        # Set layout to the widget
+        widget.setLayout(layout)
+        return widget
+
+    # Show connect msg (Future used as checking usb port input)
+    def show_connected_message(self):
+        self.status_label.setText("DCM communication with PG: Connected")
+        self.status_label.setStyleSheet("color: green;")
+
+    # Show disconnected msg (Future used as checking usb port input)
+    def show_disconnected_message(self):
+        self.status_label.setText("DCM communication with PG: Disconnected")
+        self.status_label.setStyleSheet("color: red;")
+
 
 # Only for test purpose, later we will use the main_window to start the DCM by log in the systerm
 # ---------------------------------
