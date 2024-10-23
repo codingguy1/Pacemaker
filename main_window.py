@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Set the window title
-        self.setWindowTitle("Peacemaker Control System")
+        self.setWindowTitle("Pacemaker Control System")
 
         # Set the dimensions of the main window
         self.setFixedSize(QSize(800, 600))
