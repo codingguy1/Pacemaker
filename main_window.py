@@ -53,6 +53,10 @@ class MainWindow(QMainWindow):
         self.delete_button.setFixedSize(100, 40)
         self.delete_button.clicked.connect(self.delete_user)
 
+        # Connect the Enter key to log in button
+        shortcut = QShortcut(QKeySequence(Qt.Key.Key_Return), self)  # Key_Return refers to enter key
+        shortcut.activated.connect(self.login_button.click)
+
         # Create a layout and add the widgets
         main_layout = QVBoxLayout()  # Vertical layout
 

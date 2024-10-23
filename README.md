@@ -29,4 +29,5 @@ Develop and document appropriate date structures for egram data required in futu
 
 8. (Done!) Additional Features, Add any if you want
 Implement any other requirements you elicit from the documentation that is not explicitly stated in this assignment document
-
+    enter key used as a shortcut to log in button
+    delet user button for remove existing users
