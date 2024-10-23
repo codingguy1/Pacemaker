@@ -2,10 +2,10 @@ Assignment1_data.o: \
  D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_data.c \
  D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1.h \
  D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/rtwtypes.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h \
+ C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h \
  C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
  D:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h \
+ C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h \
  C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h \
  D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_types.h \
  C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
@@ -15,13 +15,13 @@ D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1.h:
 
 D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/rtwtypes.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h:
+C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h:
 
 C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h:
 
 D:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h:
+C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h:
 
 C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h:
 

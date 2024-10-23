@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.29
+ * Model version                  : 1.44
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Oct 23 10:07:31 2024
+ * C/C++ source code generated on : Wed Oct 23 18:47:39 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -24,8 +24,8 @@
 #ifndef Assignment1_COMMON_INCLUDES_
 # define Assignment1_COMMON_INCLUDES_
 #include "rtwtypes.h"
-#include "MW_digitalIO.h"
 #include "MW_AnalogIn.h"
+#include "MW_digitalIO.h"
 #include "MW_PWM.h"
 #endif                                 /* Assignment1_COMMON_INCLUDES_ */
 
@@ -51,33 +51,39 @@ typedef struct {
   real_T Z_VENT_CTRL;                  /* '<Root>/Chart' */
   real_T Z_ATR_CTRL;                   /* '<Root>/Chart' */
   real_T FRONTEND_CTRL;                /* '<Root>/Chart' */
+  real_T PACING_REF_PWM;               /* '<Root>/Chart' */
+  real_T ATR_CMP_REF_PWM;              /* '<Root>/Chart' */
+  real_T VENT_CMP_REF_PWM;             /* '<Root>/Chart' */
 } B_Assignment1_T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
   freedomk64f_AnalogInput_Assig_T obj; /* '<S2>/Analog Input' */
-  freedomk64f_AnalogInput_Assig_T obj_c;/* '<S2>/Analog Input1' */
-  freedomk64f_AnalogInput_Assig_T obj_o;/* '<S2>/Analog Input2' */
-  freedomk64f_AnalogInput_Assig_T obj_j;/* '<S2>/Analog Input3' */
-  freedomk64f_AnalogInput_Assig_T obj_b;/* '<S2>/Analog Input4' */
-  freedomk64f_DigitalRead_Assig_T obj_n;/* '<S2>/Digital Read1' */
-  freedomk64f_DigitalRead_Assig_T obj_cn;/* '<S2>/Digital Read' */
-  freedomk64f_DigitalWrite_Assi_T obj_m;/* '<S2>/Digital Write' */
-  freedomk64f_DigitalWrite_Assi_T obj_p;/* '<S2>/Digital Write1' */
-  freedomk64f_DigitalWrite_Assi_T obj_l;/* '<S2>/Digital Write2' */
-  freedomk64f_DigitalWrite_Assi_T obj_i;/* '<S2>/Digital Write3' */
-  freedomk64f_DigitalWrite_Assi_T obj_k;/* '<S2>/Digital Write4' */
-  freedomk64f_DigitalWrite_Assi_T obj_l1;/* '<S2>/Digital Write5' */
-  freedomk64f_DigitalWrite_Assi_T obj_o2;/* '<S2>/Digital Write6' */
-  freedomk64f_DigitalWrite_Assi_T obj_by;/* '<S2>/Digital Write7' */
-  freedomk64f_DigitalWrite_Assi_T obj_h;/* '<S2>/Digital Write8' */
-  freedomk64f_DigitalWrite_Assi_T obj_e;/* '<Root>/Digital Write' */
-  freedomk64f_PWMOutput_Assignm_T obj_f;/* '<S2>/PWM Output1' */
-  freedomk64f_PWMOutput_Assignm_T obj_pg;/* '<S2>/PWM Output2' */
-  freedomk64f_PWMOutput_Assignm_T obj_je;/* '<S2>/PWM Output' */
+  freedomk64f_AnalogInput_Assig_T obj_p;/* '<S2>/Analog Input1' */
+  freedomk64f_AnalogInput_Assig_T obj_m;/* '<S2>/Analog Input2' */
+  freedomk64f_AnalogInput_Assig_T obj_k;/* '<S2>/Analog Input3' */
+  freedomk64f_AnalogInput_Assig_T obj_py;/* '<S2>/Analog Input4' */
+  freedomk64f_DigitalRead_Assig_T obj_k1;/* '<S2>/Digital Read1' */
+  freedomk64f_DigitalRead_Assig_T obj_g;/* '<S2>/Digital Read' */
+  freedomk64f_DigitalWrite_Assi_T obj_mb;/* '<S3>/Digital Write' */
+  freedomk64f_DigitalWrite_Assi_T obj_p5;/* '<S3>/Digital Write1' */
+  freedomk64f_DigitalWrite_Assi_T obj_l;/* '<S3>/Digital Write2' */
+  freedomk64f_DigitalWrite_Assi_T obj_i;/* '<S3>/Digital Write3' */
+  freedomk64f_DigitalWrite_Assi_T obj_k0;/* '<S3>/Digital Write4' */
+  freedomk64f_DigitalWrite_Assi_T obj_o;/* '<S3>/Digital Write6' */
+  freedomk64f_DigitalWrite_Assi_T obj_b;/* '<S3>/Digital Write7' */
+  freedomk64f_DigitalWrite_Assi_T obj_l1;/* '<S3>/Digital Write5' */
+  freedomk64f_DigitalWrite_Assi_T obj_h;/* '<S3>/Digital Write8' */
+  freedomk64f_PWMOutput_Assignm_T obj_j;/* '<S3>/PWM Output' */
+  freedomk64f_PWMOutput_Assignm_T obj_f;/* '<S3>/PWM Output1' */
+  freedomk64f_PWMOutput_Assignm_T obj_pg;/* '<S3>/PWM Output2' */
   uint32_T temporalCounter_i1;         /* '<Root>/Chart' */
   uint8_T is_active_c3_Assignment1;    /* '<Root>/Chart' */
   uint8_T is_c3_Assignment1;           /* '<Root>/Chart' */
+  uint8_T is_AOO;                      /* '<Root>/Chart' */
+  uint8_T is_VOO;                      /* '<Root>/Chart' */
+  uint8_T is_VVI;                      /* '<Root>/Chart' */
+  uint8_T is_AAI;                      /* '<Root>/Chart' */
 } DW_Assignment1_T;
 
 /* Parameters (default storage) */
@@ -103,26 +109,32 @@ struct P_Assignment1_T_ {
   real_T DigitalRead1_SampleTime;      /* Expression: SampleTime
                                         * Referenced by: '<S2>/Digital Read1'
                                         */
-  real_T mode_Value;                   /* Expression: 3
-                                        * Referenced by: '<Root>/mode'
+  real_T Constant6_Value;              /* Expression: 3
+                                        * Referenced by: '<S2>/Constant6'
                                         */
-  real_T atrial_pulse_width_Value;     /* Expression: 1
-                                        * Referenced by: '<Root>/atrial_pulse_width'
+  real_T Constant5_Value;              /* Expression: 1
+                                        * Referenced by: '<S2>/Constant5'
                                         */
-  real_T ventricular_pulse_width_Value;/* Expression: 1
-                                        * Referenced by: '<Root>/ventricular_pulse_width'
+  real_T Constant4_Value;              /* Expression: 1
+                                        * Referenced by: '<S2>/Constant4'
                                         */
-  real_T Constant3_Value;              /* Expression: 60
-                                        * Referenced by: '<Root>/Constant3'
+  real_T Constant3_Value;              /* Expression: 120
+                                        * Referenced by: '<S2>/Constant3'
                                         */
-  real_T Constant_Value;               /* Expression: 100
-                                        * Referenced by: '<Root>/Constant'
+  real_T Constant2_Value;              /* Expression: 320
+                                        * Referenced by: '<S2>/Constant2'
                                         */
-  real_T Constant1_Value;              /* Expression: 10
-                                        * Referenced by: '<Root>/Constant1'
+  real_T Constant1_Value;              /* Expression: 320
+                                        * Referenced by: '<S2>/Constant1'
                                         */
-  real_T Constant2_Value;              /* Expression: 70
-                                        * Referenced by: '<Root>/Constant2'
+  real_T Constant7_Value;              /* Expression: 80
+                                        * Referenced by: '<S2>/Constant7'
+                                        */
+  real_T Constant9_Value;              /* Expression: 0
+                                        * Referenced by: '<S2>/Constant9'
+                                        */
+  real_T Constant8_Value;              /* Expression: 0
+                                        * Referenced by: '<S2>/Constant8'
                                         */
 };
 
@@ -149,23 +161,6 @@ extern void Assignment1_terminate(void);
 extern RT_MODEL_Assignment1_T *const Assignment1_M;
 
 /*-
- * These blocks were eliminated from the model due to optimizations:
- *
- * Block '<Root>/AND' : Unused code path elimination
- * Block '<Root>/AND1' : Unused code path elimination
- * Block '<Root>/AND2' : Unused code path elimination
- * Block '<Root>/AND3' : Unused code path elimination
- * Block '<Root>/Constant4' : Unused code path elimination
- * Block '<Root>/Constant5' : Unused code path elimination
- * Block '<Root>/Constant6' : Unused code path elimination
- * Block '<Root>/Constant7' : Unused code path elimination
- * Block '<Root>/Equal' : Unused code path elimination
- * Block '<Root>/Equal1' : Unused code path elimination
- * Block '<Root>/Equal2' : Unused code path elimination
- * Block '<Root>/Equal3' : Unused code path elimination
- */
-
-/*-
  * The generated code includes comments that allow you to trace directly
  * back to the appropriate location in the model.  The basic format
  * is <system>/block_name, where system is the system number (uniquely
@@ -181,7 +176,8 @@ extern RT_MODEL_Assignment1_T *const Assignment1_M;
  *
  * '<Root>' : 'Assignment1'
  * '<S1>'   : 'Assignment1/Chart'
- * '<S2>'   : 'Assignment1/Subsystem Reference'
+ * '<S2>'   : 'Assignment1/Input'
+ * '<S3>'   : 'Assignment1/Output'
  */
 #endif                                 /* RTW_HEADER_Assignment1_h_ */
 

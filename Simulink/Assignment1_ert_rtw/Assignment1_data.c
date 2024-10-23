@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.29
+ * Model version                  : 1.44
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Oct 23 10:07:31 2024
+ * C/C++ source code generated on : Wed Oct 23 18:47:39 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -58,39 +58,49 @@ P_Assignment1_T Assignment1_P = {
   -1.0,
 
   /* Expression: 3
-   * Referenced by: '<Root>/mode'
+   * Referenced by: '<S2>/Constant6'
    */
   3.0,
 
   /* Expression: 1
-   * Referenced by: '<Root>/atrial_pulse_width'
+   * Referenced by: '<S2>/Constant5'
    */
   1.0,
 
   /* Expression: 1
-   * Referenced by: '<Root>/ventricular_pulse_width'
+   * Referenced by: '<S2>/Constant4'
    */
   1.0,
 
-  /* Expression: 60
-   * Referenced by: '<Root>/Constant3'
+  /* Expression: 120
+   * Referenced by: '<S2>/Constant3'
    */
-  60.0,
+  120.0,
 
-  /* Expression: 100
-   * Referenced by: '<Root>/Constant'
+  /* Expression: 320
+   * Referenced by: '<S2>/Constant2'
    */
-  100.0,
+  320.0,
 
-  /* Expression: 10
-   * Referenced by: '<Root>/Constant1'
+  /* Expression: 320
+   * Referenced by: '<S2>/Constant1'
    */
-  10.0,
+  320.0,
 
-  /* Expression: 70
-   * Referenced by: '<Root>/Constant2'
+  /* Expression: 80
+   * Referenced by: '<S2>/Constant7'
    */
-  70.0
+  80.0,
+
+  /* Expression: 0
+   * Referenced by: '<S2>/Constant9'
+   */
+  0.0,
+
+  /* Expression: 0
+   * Referenced by: '<S2>/Constant8'
+   */
+  0.0
 };
 
 /*
