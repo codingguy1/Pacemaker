@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'Assignment1'. 
 ## 
 ## Makefile     : Assignment1.mk
-## Generated on : Thu Oct 24 21:34:13 2024
+## Generated on : Fri Oct 25 13:16:08 2024
 ## MATLAB Coder version: 5.0 (R2020a)
 ## 
 ## Build Info:
@@ -25,11 +25,11 @@
 
 PRODUCT_NAME              = Assignment1
 MAKEFILE                  = Assignment1.mk
-MATLAB_ROOT               = /Applications/MATLAB_R2020a.app
-MATLAB_BIN                = /Applications/MATLAB_R2020a.app/bin
-MATLAB_ARCH_BIN           = $(MATLAB_BIN)/maci64
+MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2020a
+MATLAB_BIN                = C:/PROGRA~1/MATLAB/R2020a/bin
+MATLAB_ARCH_BIN           = $(MATLAB_BIN)/win64
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink
+START_DIR                 = C:/Users/JOHNSA~1/ONEDRI~1/CLASSR~1/UNIVER~1/THIRDY~1/SOFTWA~1/PACEMA~1/Codebase/PACEMA~1/Simulink
 SOLVER                    = 
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
@@ -69,6 +69,7 @@ LIBM                  = ${shell $(MW_GNU_ARM_TOOLS_PATH)/arm-none-eabi-gcc ${CFL
 PRODUCT_BIN           = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).bin
 PRODUCT_HEX           = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).hex
 CPFLAGS               = -O binary
+SHELL                 = %SystemRoot%/system32/cmd.exe
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
@@ -125,7 +126,7 @@ DOWNLOAD =
 EXECUTE = $(PRODUCT)
 
 # Builder: GMAKE Utility
-MAKE_PATH = %MATLAB%/bin/maci64
+MAKE_PATH = %MATLAB%\bin\win64
 MAKE = "$(MAKE_PATH)/gmake"
 
 
@@ -148,7 +149,7 @@ STATICLIB_OUTPUT_FLAG =
 MEX_DEBUG           = -g
 RM                  = @del /f/q
 ECHO                = @echo
-MV                  = @mv
+MV                  = @move
 RUN                 =
 
 #----------------------------------------
@@ -228,7 +229,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_CUSTOM) $(DEFINES_OPTS) $(
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_AnalogInput.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/mw_sdk_interface.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_digitalIO.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_PWM.c $(START_DIR)/Assignment1_ert_rtw/Assignment1.c $(START_DIR)/Assignment1_ert_rtw/Assignment1_data.c /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/startup.c /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/system_MK64F12.c /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/gcc/startup_MK64F12.S /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/board.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/hardware_init.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/pin_mux.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_misc_utilities.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_edma_irq.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_uart_irq.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/irq_stub.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/sbrk.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/cmsis_rtos_init.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/Templates/RTX_Conf_CM.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_thread.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_semaphore.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_timer.c /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_signal.c
+SRCS = C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_AnalogInput.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/mw_sdk_interface.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_digitalIO.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_PWM.c $(START_DIR)/Assignment1_ert_rtw/Assignment1.c $(START_DIR)/Assignment1_ert_rtw/Assignment1_data.c C:/Freescale/KSDK_1.2.0/platform/devices/startup.c C:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/system_MK64F12.c C:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/gcc/startup_MK64F12.S C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/board.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/hardware_init.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/pin_mux.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_misc_utilities.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_edma_irq.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_uart_irq.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/irq_stub.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/sbrk.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/cmsis_rtos_init.c C:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/Templates/RTX_Conf_CM.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_thread.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_semaphore.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_timer.c C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_signal.c
 
 MAIN_SRC = $(START_DIR)/Assignment1_ert_rtw/ert_main.c
 
@@ -254,7 +255,7 @@ PREBUILT_OBJS =
 ## LIBRARIES
 ###########################################################################
 
-LIBS = /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/LIB/GCC/libRTX_CM4.a /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/ksdk_armgcc_lib/bm/libksdk_platform.a
+LIBS = C:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a C:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/LIB/GCC/libRTX_CM4.a C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/ksdk_armgcc_lib/bm/libksdk_platform.a
 
 ###########################################################################
 ## SYSTEM LIBRARIES
@@ -288,7 +289,7 @@ CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
 # C++ Linker
 #---------------
 
-CPP_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
+CPP_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"C:\ProgramData\MATLAB\SupportPackages\R2020a\toolbox\target\supportpackages\freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
 
 CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 
@@ -296,7 +297,7 @@ CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 # C++ Shared Library Linker
 #------------------------------
 
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"C:\ProgramData\MATLAB\SupportPackages\R2020a\toolbox\target\supportpackages\freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
 
 CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -304,7 +305,7 @@ CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 # Linker
 #-----------
 
-LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
+LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"C:\ProgramData\MATLAB\SupportPackages\R2020a\toolbox\target\supportpackages\freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
 
 LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 
@@ -328,7 +329,7 @@ MEX_CFLAGS += $(MEX_Compiler_BASIC)
 # Shared Library Linker
 #--------------------------
 
-SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
+SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -L"C:\ProgramData\MATLAB\SupportPackages\R2020a\toolbox\target\supportpackages\freedomk64f/src" -T "MK64FN1M0xxx12_flash_1.ld" -g -Xlinker --gc-sections -Wl,-Map=$(PRODUCT_NAME).map
 
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -404,7 +405,7 @@ execute : download
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(LIBS) $(MAIN_OBJ)
 	@echo "### Creating standalone executable "$(PRODUCT)" ..."
-	$(LD) $(LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(LIBS) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
+	$(CPP_LD) $(CPP_LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(LIBS) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
 	@echo "### Created: $(PRODUCT)"
 
 
@@ -584,19 +585,19 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(LIBS) $(MAIN_OBJ)
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-MW_AnalogInput.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_AnalogInput.c
+MW_AnalogInput.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_AnalogInput.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-mw_sdk_interface.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/mw_sdk_interface.c
+mw_sdk_interface.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/mw_sdk_interface.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-MW_digitalIO.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_digitalIO.c
+MW_digitalIO.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_digitalIO.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-MW_PWM.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_PWM.c
+MW_PWM.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/MW_PWM.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
@@ -612,71 +613,71 @@ Assignment1_data.o : $(START_DIR)/Assignment1_ert_rtw/Assignment1_data.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-startup.o : /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/startup.c
+startup.o : C:/Freescale/KSDK_1.2.0/platform/devices/startup.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-system_MK64F12.o : /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/system_MK64F12.c
+system_MK64F12.o : C:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/system_MK64F12.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-startup_MK64F12.o : /Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/gcc/startup_MK64F12.S
+startup_MK64F12.o : C:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup/gcc/startup_MK64F12.S
 	$(AS) $(ASFLAGS) -o "$@" "$<"
 
 
-board.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/board.c
+board.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/board.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-hardware_init.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/hardware_init.c
+hardware_init.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/hardware_init.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-pin_mux.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/pin_mux.c
+pin_mux.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/pin_mux.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-fsl_misc_utilities.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_misc_utilities.c
+fsl_misc_utilities.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_misc_utilities.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-fsl_edma_irq.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_edma_irq.c
+fsl_edma_irq.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_edma_irq.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-fsl_uart_irq.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_uart_irq.c
+fsl_uart_irq.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/fsl_uart_irq.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-irq_stub.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/irq_stub.c
+irq_stub.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/irq_stub.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-sbrk.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/sbrk.c
+sbrk.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/src/sbrk.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-cmsis_rtos_init.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/cmsis_rtos_init.c
+cmsis_rtos_init.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/cmsis_rtos_init.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-RTX_Conf_CM.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/Templates/RTX_Conf_CM.c
+RTX_Conf_CM.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/Templates/RTX_Conf_CM.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-mw_thread.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_thread.c
+mw_thread.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_thread.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-mw_semaphore.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_semaphore.c
+mw_semaphore.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_semaphore.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-mw_timer.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_timer.c
+mw_timer.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_timer.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-mw_signal.o : /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_signal.c
+mw_signal.o : C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/src/mw_signal.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
@@ -725,8 +726,8 @@ info :
 
 clean : 
 	$(ECHO) "### Deleting all derived files..."
-	$(RM) $(PRODUCT)
-	$(RM) $(ALL_OBJS)
+	$(RM) $(subst /,\,$(PRODUCT))
+	$(RM) $(subst /,\,$(ALL_OBJS))
 	$(RM) *.dep
 	$(ECHO) "### Deleted all derived files."
 

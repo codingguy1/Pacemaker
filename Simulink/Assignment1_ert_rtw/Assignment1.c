@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.48
+ * Model version                  : 1.62
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri Oct 25 00:59:22 2024
+ * C/C++ source code generated on : Fri Oct 25 13:34:12 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -46,10 +46,12 @@ RT_MODEL_Assignment1_T Assignment1_M_;
 RT_MODEL_Assignment1_T *const Assignment1_M = &Assignment1_M_;
 
 /* Forward declaration for local functions */
-static void Assignm_enter_atomic_AOO_Charge(void);
-static void Assignment1_AAI(const boolean_T *DigitalRead);
-static void Assignment1_AOO(void);
-static void Assignm_enter_atomic_VOO_Charge(void);
+static void Assignm_enter_atomic_AOO_Charge(const real_T *y_k);
+static void Assignment1_AAI(const real_T *y_lk, const real_T *y_b, const real_T *
+  y_k, const real_T *y_nn, const real_T *y_g, const boolean_T *DigitalRead);
+static void Assignment1_AOO(const real_T *y_b, const real_T *y_k, const real_T
+  *y_nn, const real_T *y_g);
+static void Assignm_enter_atomic_VOO_Charge(const real_T *y_k);
 static void Assign_SystemCore_release_j3b1w(const
   freedomk64f_DigitalRead_Assig_T *obj);
 static void Assignm_SystemCore_delete_j3b1w(const
@@ -71,11 +73,45 @@ static void Assignment1_SystemCore_delete(const freedomk64f_AnalogInput_Assig_T 
   obj);
 static void matlabCodegenHandle_matlabCodeg(freedomk64f_AnalogInput_Assig_T *obj);
 
-/* Function for Chart: '<Root>/Chart' */
-static void Assignm_enter_atomic_AOO_Charge(void)
+/*
+ * Output and update for atomic system:
+ *    '<S2>/APW Limiter'
+ *    '<S2>/VPW Limiter'
+ */
+void Assignment1_APWLimiter(real_T rtu_u, real_T *rty_y)
 {
-  /* Constant: '<S2>/Constant7' */
-  Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+  *rty_y = rtu_u;
+  if (rtu_u >= 21.0) {
+    *rty_y = 20.0;
+  } else {
+    if (rtu_u < 1.0) {
+      *rty_y = 1.0;
+    }
+  }
+}
+
+/*
+ * Output and update for atomic system:
+ *    '<S2>/ARP Limiter'
+ *    '<S2>/URL Limiter'
+ *    '<S2>/VRP Limiter'
+ */
+void Assignment1_ARPLimiter(real_T rtu_u, real_T *rty_y)
+{
+  *rty_y = rtu_u;
+  if (rtu_u >= 5.0) {
+    *rty_y = 4.0;
+  } else {
+    if (rtu_u < 0.0) {
+      *rty_y = 1.0;
+    }
+  }
+}
+
+/* Function for Chart: '<Root>/Chart' */
+static void Assignm_enter_atomic_AOO_Charge(const real_T *y_k)
+{
+  Assignment1_B.PACING_REF_PWM = *y_k;
   Assignment1_B.ATR_CMP_REF_PWM = 70.0;
   Assignment1_B.PACE_CHARGE_CTRL = 1.0;
   Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -89,16 +125,11 @@ static void Assignm_enter_atomic_AOO_Charge(void)
 }
 
 /* Function for Chart: '<Root>/Chart' */
-static void Assignment1_AAI(const boolean_T *DigitalRead)
+static void Assignment1_AAI(const real_T *y_lk, const real_T *y_b, const real_T *
+  y_k, const real_T *y_nn, const real_T *y_g, const boolean_T *DigitalRead)
 {
   boolean_T sf_internal_predicateOutput;
-
-  /* Constant: '<S2>/Constant6' incorporates:
-   *  Constant: '<S2>/Constant2'
-   *  Constant: '<S2>/Constant3'
-   *  Constant: '<S2>/Constant5'
-   */
-  if (Assignment1_P.Constant6_Value != 3.0) {
+  if (*y_g != 3.0) {
     Assignment1_DW.is_AAI = Assignment1_IN_NO_ACTIVE_CHILD;
     Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_OFF;
     Assignment1_B.ATR_PACE_CTRL = 0.0;
@@ -130,19 +161,14 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
       Assignment1_B.VENT_GND_CTRL = 0.0;
       Assignment1_B.Z_ATR_CTRL = 0.0;
       Assignment1_B.Z_VENT_CTRL = 0.0;
-
-      /* Constant: '<S2>/Constant5' */
-      if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-          (Assignment1_P.Constant5_Value)) {
+      if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(*y_b)) {
         Assignment1_DW.is_AAI = Assignment1_IN_AOO_Charge;
-        Assignm_enter_atomic_AOO_Charge();
+        Assignm_enter_atomic_AOO_Charge(y_k);
       }
       break;
 
      case Assignment1_IN_delay:
-      /* Constant: '<S2>/Constant2' */
-      if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-          (Assignment1_P.Constant2_Value)) {
+      if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(*y_lk)) {
         Assignment1_DW.is_AAI = Assignment1_IN_sense;
         Assignment1_DW.temporalCounter_i1 = 0U;
         Assignment1_B.FRONTEND_CTRL = 1.0;
@@ -156,9 +182,8 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
         Assignment1_DW.is_AAI = Assignment1_IN_delay;
         Assignment1_DW.temporalCounter_i1 = 0U;
       } else {
-        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil((60000.0 /
-              Assignment1_P.Constant3_Value - Assignment1_P.Constant5_Value) +
-             Assignment1_P.Constant2_Value)) {
+        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil((60000.0 / *y_nn
+              - *y_b) + *y_lk)) {
           sf_internal_predicateOutput = !*DigitalRead;
         } else {
           sf_internal_predicateOutput = false;
@@ -167,9 +192,7 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
         if (sf_internal_predicateOutput) {
           Assignment1_DW.is_AAI = Assignment1_IN_Atrial_Pacing;
           Assignment1_DW.temporalCounter_i1 = 0U;
-
-          /* Constant: '<S2>/Constant7' */
-          Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+          Assignment1_B.PACING_REF_PWM = *y_k;
           Assignment1_B.ATR_CMP_REF_PWM = 70.0;
           Assignment1_B.PACE_CHARGE_CTRL = 0.0;
           Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -184,15 +207,13 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
       break;
     }
   }
-
-  /* End of Constant: '<S2>/Constant6' */
 }
 
 /* Function for Chart: '<Root>/Chart' */
-static void Assignment1_AOO(void)
+static void Assignment1_AOO(const real_T *y_b, const real_T *y_k, const real_T
+  *y_nn, const real_T *y_g)
 {
-  /* Constant: '<S2>/Constant6' */
-  if (Assignment1_P.Constant6_Value != 1.0) {
+  if (*y_g != 1.0) {
     Assignment1_DW.is_AOO = Assignment1_IN_NO_ACTIVE_CHILD;
     Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_OFF;
     Assignment1_B.ATR_PACE_CTRL = 0.0;
@@ -208,17 +229,11 @@ static void Assignment1_AOO(void)
     Assignment1_B.Z_ATR_CTRL = 0.0;
     Assignment1_B.Z_VENT_CTRL = 0.0;
     Assignment1_B.FRONTEND_CTRL = 0.0;
-
-    /* Constant: '<S2>/Constant3' incorporates:
-     *  Constant: '<S2>/Constant5'
-     */
-    if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(60000.0 /
-         Assignment1_P.Constant3_Value - Assignment1_P.Constant5_Value)) {
+    if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(60000.0 / *y_nn -
+         *y_b)) {
       Assignment1_DW.is_AOO = Assignment1_IN_Atrial_Pacing;
       Assignment1_DW.temporalCounter_i1 = 0U;
-
-      /* Constant: '<S2>/Constant7' */
-      Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+      Assignment1_B.PACING_REF_PWM = *y_k;
       Assignment1_B.ATR_CMP_REF_PWM = 70.0;
       Assignment1_B.PACE_CHARGE_CTRL = 0.0;
       Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -229,8 +244,6 @@ static void Assignment1_AOO(void)
       Assignment1_B.Z_ATR_CTRL = 0.0;
       Assignment1_B.Z_VENT_CTRL = 0.0;
     }
-
-    /* End of Constant: '<S2>/Constant3' */
   } else {
     /* case IN_Atrial_Pacing: */
     Assignment1_B.ATR_CMP_REF_PWM = 70.0;
@@ -242,24 +255,18 @@ static void Assignment1_AOO(void)
     Assignment1_B.VENT_GND_CTRL = 0.0;
     Assignment1_B.Z_ATR_CTRL = 0.0;
     Assignment1_B.Z_VENT_CTRL = 0.0;
-
-    /* Constant: '<S2>/Constant5' */
-    if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-        (Assignment1_P.Constant5_Value)) {
+    if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(*y_b)) {
       Assignment1_DW.is_AOO = Assignment1_IN_AOO_Charge;
       Assignment1_DW.temporalCounter_i1 = 0U;
-      Assignm_enter_atomic_AOO_Charge();
+      Assignm_enter_atomic_AOO_Charge(y_k);
     }
   }
-
-  /* End of Constant: '<S2>/Constant6' */
 }
 
 /* Function for Chart: '<Root>/Chart' */
-static void Assignm_enter_atomic_VOO_Charge(void)
+static void Assignm_enter_atomic_VOO_Charge(const real_T *y_k)
 {
-  /* Constant: '<S2>/Constant7' */
-  Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+  Assignment1_B.PACING_REF_PWM = *y_k;
   Assignment1_B.VENT_CMP_REF_PWM = 70.0;
   Assignment1_B.PACE_CHARGE_CTRL = 1.0;
   Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -366,8 +373,38 @@ static void matlabCodegenHandle_matlabCodeg(freedomk64f_AnalogInput_Assig_T *obj
 void Assignment1_step(void)
 {
   boolean_T tmp;
-  real_T tmp_0;
+  real_T y_n;
+  real_T y;
+  real_T y_lk;
+  real_T y_d;
+  real_T y_b;
+  real_T y_nn;
+  real_T y_g;
   boolean_T DigitalRead;
+
+  /* MATLAB Function: '<S2>/Mode Limiter' incorporates:
+   *  Constant: '<S2>/Mode'
+   */
+  y_g = Assignment1_P.Mode_Value;
+  if (Assignment1_P.Mode_Value >= 5.0) {
+    y_g = 4.0;
+  } else {
+    if (Assignment1_P.Mode_Value < 1.0) {
+      y_g = 1.0;
+    }
+  }
+
+  /* End of MATLAB Function: '<S2>/Mode Limiter' */
+
+  /* MATLAB Function: '<S2>/APW Limiter' incorporates:
+   *  Constant: '<S2>/Constant5'
+   */
+  Assignment1_APWLimiter(Assignment1_P.Constant5_Value, &y_b);
+
+  /* MATLAB Function: '<S2>/VPW Limiter' incorporates:
+   *  Constant: '<S2>/Constant4'
+   */
+  Assignment1_APWLimiter(Assignment1_P.Constant4_Value, &y_d);
 
   /* MATLABSystem: '<S2>/Digital Read1' */
   if (Assignment1_DW.obj_k1.SampleTime != Assignment1_P.DigitalRead1_SampleTime)
@@ -386,14 +423,62 @@ void Assignment1_step(void)
 
   /* End of MATLABSystem: '<S2>/Digital Read' */
 
-  /* Chart: '<Root>/Chart' incorporates:
-   *  Constant: '<S2>/Constant1'
+  /* MATLAB Function: '<S2>/BPM Limiter' incorporates:
    *  Constant: '<S2>/Constant3'
-   *  Constant: '<S2>/Constant4'
-   *  Constant: '<S2>/Constant6'
+   */
+  y_nn = Assignment1_P.Constant3_Value;
+  if (Assignment1_P.Constant3_Value >= 181.0) {
+    y_nn = 180.0;
+  } else {
+    if (Assignment1_P.Constant3_Value < 30.0) {
+      y_nn = 30.0;
+    }
+  }
+
+  /* End of MATLAB Function: '<S2>/BPM Limiter' */
+
+  /* MATLAB Function: '<S2>/ARP Limiter' incorporates:
+   *  Constant: '<S2>/Constant2'
+   */
+  Assignment1_ARPLimiter(Assignment1_P.Constant2_Value, &y_lk);
+
+  /* MATLAB Function: '<S2>/VRP Limiter' incorporates:
+   *  Constant: '<S2>/Constant1'
+   */
+  Assignment1_ARPLimiter(Assignment1_P.Constant1_Value, &y);
+
+  /* MATLAB Function: '<S2>/Amp Limiter' incorporates:
    *  Constant: '<S2>/Constant7'
-   *  Constant: '<S2>/Constant8'
+   */
+  Assignment1_B.u = Assignment1_P.Constant7_Value;
+  if (Assignment1_P.Constant7_Value >= 101.0) {
+    Assignment1_B.u = 100.0;
+  } else {
+    if (Assignment1_P.Constant7_Value < 1.0) {
+      Assignment1_B.u = 1.0;
+    }
+  }
+
+  /* MATLAB Function: '<S2>/URL Limiter' incorporates:
    *  Constant: '<S2>/Constant9'
+   */
+  Assignment1_ARPLimiter(Assignment1_P.Constant9_Value, &y_n);
+
+  /* MATLAB Function: '<S2>/LRL Limiter' incorporates:
+   *  Constant: '<S2>/Constant8'
+   */
+  Assignment1_B.u_m = Assignment1_P.Constant8_Value;
+  if (Assignment1_P.Constant8_Value >= 180.0) {
+    Assignment1_B.u_m = 4.0;
+  } else {
+    if (Assignment1_P.Constant8_Value < 0.0) {
+      Assignment1_B.u_m = 1.0;
+    }
+  }
+
+  /* Chart: '<Root>/Chart' incorporates:
+   *  MATLAB Function: '<S2>/Amp Limiter'
+   *  MATLAB Function: '<S2>/LRL Limiter'
    *  MATLABSystem: '<S2>/Digital Read1'
    */
   if (Assignment1_DW.temporalCounter_i1 < MAX_uint32_T) {
@@ -408,29 +493,29 @@ void Assignment1_step(void)
   } else {
     switch (Assignment1_DW.is_c3_Assignment1) {
      case Assignment1_IN_AAI:
-      Assignment1_AAI(&DigitalRead);
+      Assignment1_AAI(&y_lk, &y_b, &Assignment1_B.u, &y_nn, &y_g, &DigitalRead);
       break;
 
      case Assignment1_IN_AOO:
-      Assignment1_AOO();
+      Assignment1_AOO(&y_b, &Assignment1_B.u, &y_nn, &y_g);
       break;
 
      case Assignment1_IN_OFF:
       Assignment1_B.ATR_PACE_CTRL = 0.0;
       Assignment1_B.VENT_PACE_CTRL = 0.0;
-      if (Assignment1_P.Constant6_Value == 3.0) {
+      if (y_g == 3.0) {
         Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_AAI;
         Assignment1_DW.is_AAI = Assignment1_IN_AOO_Charge;
-        Assignm_enter_atomic_AOO_Charge();
-      } else if (Assignment1_P.Constant6_Value == 1.0) {
+        Assignm_enter_atomic_AOO_Charge(&Assignment1_B.u);
+      } else if (y_g == 1.0) {
         Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_AOO;
         Assignment1_DW.is_AOO = Assignment1_IN_AOO_Charge;
         Assignment1_DW.temporalCounter_i1 = 0U;
-        Assignm_enter_atomic_AOO_Charge();
-      } else if (Assignment1_P.Constant6_Value == 4.0) {
+        Assignm_enter_atomic_AOO_Charge(&Assignment1_B.u);
+      } else if (y_g == 4.0) {
         Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_VVI;
         Assignment1_DW.is_VVI = Assignment1_IN_VVI_Charge;
-        Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+        Assignment1_B.PACING_REF_PWM = Assignment1_B.u;
         Assignment1_B.VENT_CMP_REF_PWM = 70.0;
         Assignment1_B.PACE_CHARGE_CTRL = 1.0;
         Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -441,17 +526,17 @@ void Assignment1_step(void)
         Assignment1_B.Z_ATR_CTRL = 0.0;
         Assignment1_B.Z_VENT_CTRL = 0.0;
       } else {
-        if (Assignment1_P.Constant6_Value == 2.0) {
+        if (y_g == 2.0) {
           Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_VOO;
           Assignment1_DW.is_VOO = Assignment1_IN_VOO_Charge;
           Assignment1_DW.temporalCounter_i1 = 0U;
-          Assignm_enter_atomic_VOO_Charge();
+          Assignm_enter_atomic_VOO_Charge(&Assignment1_B.u);
         }
       }
       break;
 
      case Assignment1_IN_VOO:
-      if (Assignment1_P.Constant6_Value != 2.0) {
+      if (y_g != 2.0) {
         Assignment1_DW.is_VOO = Assignment1_IN_NO_ACTIVE_CHILD;
         Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_OFF;
         Assignment1_B.ATR_PACE_CTRL = 0.0;
@@ -467,12 +552,11 @@ void Assignment1_step(void)
         Assignment1_B.Z_ATR_CTRL = 0.0;
         Assignment1_B.Z_VENT_CTRL = 0.0;
         Assignment1_B.FRONTEND_CTRL = 0.0;
-        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil((60000.0 /
-              Assignment1_P.Constant3_Value - Assignment1_P.Constant4_Value) +
-             Assignment1_P.Constant8_Value)) {
+        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil((60000.0 / y_nn
+              - y_d) + Assignment1_B.u_m)) {
           Assignment1_DW.is_VOO = Assignmen_IN_Ventricular_Pacing;
           Assignment1_DW.temporalCounter_i1 = 0U;
-          Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+          Assignment1_B.PACING_REF_PWM = Assignment1_B.u;
           Assignment1_B.VENT_CMP_REF_PWM = 70.0;
           Assignment1_B.PACE_CHARGE_CTRL = 0.0;
           Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -494,18 +578,17 @@ void Assignment1_step(void)
         Assignment1_B.Z_VENT_CTRL = 0.0;
         Assignment1_B.VENT_PACE_CTRL = 1.0;
         Assignment1_B.VENT_GND_CTRL = 0.0;
-        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-            (Assignment1_P.Constant4_Value)) {
+        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(y_d)) {
           Assignment1_DW.is_VOO = Assignment1_IN_VOO_Charge;
           Assignment1_DW.temporalCounter_i1 = 0U;
-          Assignm_enter_atomic_VOO_Charge();
+          Assignm_enter_atomic_VOO_Charge(&Assignment1_B.u);
         }
       }
       break;
 
      default:
       /* case IN_VVI: */
-      if (Assignment1_P.Constant6_Value != 4.0) {
+      if (y_g != 4.0) {
         Assignment1_DW.is_VVI = Assignment1_IN_NO_ACTIVE_CHILD;
         Assignment1_DW.is_c3_Assignment1 = Assignment1_IN_OFF;
         Assignment1_B.ATR_PACE_CTRL = 0.0;
@@ -537,10 +620,9 @@ void Assignment1_step(void)
           Assignment1_B.Z_VENT_CTRL = 0.0;
           Assignment1_B.VENT_PACE_CTRL = 1.0;
           Assignment1_B.VENT_GND_CTRL = 0.0;
-          if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-              (Assignment1_P.Constant4_Value)) {
+          if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(y_d)) {
             Assignment1_DW.is_VVI = Assignment1_IN_VVI_Charge;
-            Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+            Assignment1_B.PACING_REF_PWM = Assignment1_B.u;
             Assignment1_B.VENT_CMP_REF_PWM = 70.0;
             Assignment1_B.PACE_CHARGE_CTRL = 1.0;
             Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -554,8 +636,7 @@ void Assignment1_step(void)
           break;
 
          case Assignment1_IN_delay:
-          if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-              (Assignment1_P.Constant1_Value)) {
+          if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(y)) {
             Assignment1_DW.is_VVI = Assignment1_IN_sense;
             Assignment1_DW.temporalCounter_i1 = 0U;
             Assignment1_B.FRONTEND_CTRL = 1.0;
@@ -570,12 +651,10 @@ void Assignment1_step(void)
             Assignment1_DW.temporalCounter_i1 = 0U;
           } else {
             if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(((60000.0 /
-                   Assignment1_P.Constant3_Value - Assignment1_P.Constant4_Value)
-                  + Assignment1_P.Constant1_Value) +
-                 Assignment1_P.Constant9_Value)) {
+                   y_nn - y_d) + y) + y_n)) {
               Assignment1_DW.is_VVI = Assignmen_IN_Ventricular_Pacing;
               Assignment1_DW.temporalCounter_i1 = 0U;
-              Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;
+              Assignment1_B.PACING_REF_PWM = Assignment1_B.u;
               Assignment1_B.VENT_CMP_REF_PWM = 70.0;
               Assignment1_B.PACE_CHARGE_CTRL = 0.0;
               Assignment1_B.PACE_GND_CTRL = 1.0;
@@ -650,7 +729,7 @@ void Assignment1_step(void)
   }
 
   MW_AnalogIn_Start(Assignment1_DW.obj.MW_ANALOGIN_HANDLE);
-  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj.MW_ANALOGIN_HANDLE, &tmp_0, 7);
+  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj.MW_ANALOGIN_HANDLE, &y_g, 7);
 
   /* End of MATLABSystem: '<S2>/Analog Input' */
 
@@ -661,8 +740,7 @@ void Assignment1_step(void)
   }
 
   MW_AnalogIn_Start(Assignment1_DW.obj_p.MW_ANALOGIN_HANDLE);
-  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_p.MW_ANALOGIN_HANDLE, &tmp_0,
-    7);
+  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_p.MW_ANALOGIN_HANDLE, &y_g, 7);
 
   /* End of MATLABSystem: '<S2>/Analog Input1' */
 
@@ -673,8 +751,7 @@ void Assignment1_step(void)
   }
 
   MW_AnalogIn_Start(Assignment1_DW.obj_m.MW_ANALOGIN_HANDLE);
-  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_m.MW_ANALOGIN_HANDLE, &tmp_0,
-    7);
+  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_m.MW_ANALOGIN_HANDLE, &y_g, 7);
 
   /* End of MATLABSystem: '<S2>/Analog Input2' */
 
@@ -685,8 +762,7 @@ void Assignment1_step(void)
   }
 
   MW_AnalogIn_Start(Assignment1_DW.obj_k.MW_ANALOGIN_HANDLE);
-  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_k.MW_ANALOGIN_HANDLE, &tmp_0,
-    7);
+  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_k.MW_ANALOGIN_HANDLE, &y_g, 7);
 
   /* End of MATLABSystem: '<S2>/Analog Input3' */
 
@@ -697,8 +773,7 @@ void Assignment1_step(void)
   }
 
   MW_AnalogIn_Start(Assignment1_DW.obj_py.MW_ANALOGIN_HANDLE);
-  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_py.MW_ANALOGIN_HANDLE, &tmp_0,
-    7);
+  MW_AnalogInSingle_ReadResult(Assignment1_DW.obj_py.MW_ANALOGIN_HANDLE, &y_g, 7);
 
   /* End of MATLABSystem: '<S2>/Analog Input4' */
 }
