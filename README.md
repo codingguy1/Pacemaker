@@ -35,7 +35,8 @@ Implement any other requirements you elicit from the documentation that is not e
 Improvement:
 1. pacing modes has it own specified parameters.
 2. real time shwoing the current pacing mode when runing electrogram.
-3. Showing username on the application window.
+3. (Done!) Showing username on the application window.
 4. Add more colour.
-5. Some way to exit the program.
+5. (Done!) Some way to exit the program.
+6. Add range limit for the parameters.
 

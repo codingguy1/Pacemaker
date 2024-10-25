@@ -1,15 +1,22 @@
 import sys
+import serial
+import serial.tools.list_ports
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
 class ApplicationWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, username):
         super().__init__()
 
         # Set the window title and dimensions
-        self.setWindowTitle("Main Application Window")
+        self.setWindowTitle("Application Window")
         self.setFixedSize(QSize(800, 600))
+
+        # Create a label to display the logged-in user's name
+        self.username_label = QLabel(f"Logged in as: {username}", self)
+        self.username_label.setFont(QFont('Arial', 14))
+        self.username_label.setGeometry(10, 550, 300, 30)  # Set position and size of label
 
         # Section: Central Stacked Widget (Click toolbar will lead current window to a different section)
         # ---------------------------------
@@ -52,6 +59,11 @@ class ApplicationWindow(QMainWindow):
         connection_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.connection_widget))
         toolbar.addAction(connection_action)
 
+        # Add Exit button to the toolbar
+        exit_action = QAction("Exit", self)
+        exit_action.triggered.connect(self.exit)
+        toolbar.addAction(exit_action)
+
     # Section: Parameters Widget
     # ---------------------------------
     def create_parameters_widget(self):
@@ -60,26 +72,15 @@ class ApplicationWindow(QMainWindow):
         layout = QFormLayout()
 
         # Add input fields for parameters
-        lower_rate_limit = QLineEdit()
-        upper_rate_limit = QLineEdit()
-        atrial_amplitude = QLineEdit()
-        atrial_pulse_width = QLineEdit()
-        ventricular_amplitude = QLineEdit()
-        ventricular_pulse_width = QLineEdit()
-        vrp = QLineEdit()
-        arp = QLineEdit()
+        layout.addRow("Lower Rate Limit:", QLineEdit())
+        layout.addRow("Upper Rate Limit:", QLineEdit())
+        layout.addRow("Atrial Amplitude:", QLineEdit())
+        layout.addRow("Atrial Pulse Width:", QLineEdit())
+        layout.addRow("Ventricular Amplitude:", QLineEdit())
+        layout.addRow("Ventricular Pulse Width:", QLineEdit())
+        layout.addRow("VRP:", QLineEdit())
+        layout.addRow("ARP:", QLineEdit())
 
-        # Add fields to the form layout
-        layout.addRow("Lower Rate Limit:", lower_rate_limit)
-        layout.addRow("Upper Rate Limit:", upper_rate_limit)
-        layout.addRow("Atrial Amplitude:", atrial_amplitude)
-        layout.addRow("Atrial Pulse Width:", atrial_pulse_width)
-        layout.addRow("Ventricular Amplitude:", ventricular_amplitude)
-        layout.addRow("Ventricular Pulse Width:", ventricular_pulse_width)
-        layout.addRow("VRP:", vrp)
-        layout.addRow("ARP:", arp)
-
-        # Set layout to the widget
         widget.setLayout(layout)
         return widget
 
@@ -118,59 +119,56 @@ class ApplicationWindow(QMainWindow):
     # Section: Device Connect Status Widget
     # ---------------------------------
     def create_connection(self):
-        # Create buttons for check connection status
-        self.connect_button = QPushButton("Check for Connect Status")
-        self.disconnect_button = QPushButton("Check for Disconnect Status")
-
-        # Set button size 
-        self.connect_button.setFixedSize(300, 60)
-        self.disconnect_button.setFixedSize(300, 60)
-
-        # Create a widget for displaying message of device connection status
         widget = QWidget()
         layout = QVBoxLayout()
 
-        # Add labels for the connection and disconnection messages
-        self.status_label = QLabel("DCM communication with PG: Disconnected")
-        self.status_label.setFont(QFont('Arial', 12))
-        self.status_label.setStyleSheet("color: red;")
-        layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignCenter)
+        # Create buttons
+        self.connect_button = QPushButton("Connection Status")
+        self.disconnect_button = QPushButton("Disconnect Telemetry")
 
-        # Button layout 
+        # Set button sizes
+        self.connect_button.setFixedSize(300, 60)
+        self.disconnect_button.setFixedSize(300, 60)
+
+        # Create a single status message label
+        self.status_msg = QLabel("Device not connected")
+        self.status_msg.setFont(QFont('Arial', 12))
+        self.status_msg.setStyleSheet("color: red;")
+        layout.addWidget(self.status_msg, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Button layout
         layout.addWidget(self.connect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom)
         layout.addWidget(self.disconnect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
-
-        # Add labels for checking connected device number/model
-        device_label = QLabel("The connected PACEMAKER device is: H00140")
-        device_label.setFont(QFont('Arial', 12))
-        layout.addWidget(device_label, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
-
+    
         # Connect the buttons to the appropriate slots
-        self.connect_button.clicked.connect(self.show_connected_message)
-        self.disconnect_button.clicked.connect(self.show_disconnected_message)
+        self.connect_button.clicked.connect(self.check_connection_status)
+        self.disconnect_button.clicked.connect(self.disconnect_device)
 
-        # Set layout to the widget
         widget.setLayout(layout)
         return widget
 
-    # Show connect msg (Future used as checking usb port input)
-    def show_connected_message(self):
-        self.status_label.setText("DCM communication with PG: Connected")
-        self.status_label.setStyleSheet("color: green;")
+    def check_connection_status(self):
+        # Check available serial ports
+        ports = serial.tools.list_ports.comports()
+        for port in ports:
+            # Pacemaker ID 
+            if "H00140" in port.description:
+                self.status_msg.setText(f"Connected device: {port.device}")
+                self.status_msg.setStyleSheet("color: green;")
+                return
 
-    # Show disconnected msg (Future used as checking usb port input)
-    def show_disconnected_message(self):
-        self.status_label.setText("DCM communication with PG: Disconnected")
-        self.status_label.setStyleSheet("color: red;")
+        # If no device is found
+        self.status_msg.setText("Device not connected")
+        self.status_msg.setStyleSheet("color: red;")
+
+    def disconnect_device(self):
+        # Set the logic here when actually connecting with the device
+        # A condition to detect that the telemetry is on
+        self.status_msg.setText("Telemetry is stopped")
+        self.status_msg.setStyleSheet("color: red;")
 
 
-# Only for test purpose, later we will use the main_window to start the DCM by log in the systerm
-# ---------------------------------
-def main():
-    app = QApplication(sys.argv)
-    window = ApplicationWindow()
-    window.show()
-    sys.exit(app.exec())
-
-if __name__ == "__main__":
-    main()
+    # Section: Program exit
+    # ---------------------------------
+    def exit(self):
+        self.hide()

@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Set the window title
-        self.setWindowTitle("Pacemaker Control System")
+        self.setWindowTitle("Welcom Window")
 
         # Set the dimensions of the main window
         self.setFixedSize(QSize(800, 600))
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         fireball_img = QPixmap("fireball.png").scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
         # Create QLabel for welcome msg
-        msg = QLabel('Hello, Welcome to Peacemaker Control System')
+        msg = QLabel('Hello, Welcome to Pacemaker Control System')
         msg.setFont(QFont('Arial', 14))
 
         # Create QLabel widgets to display the images
@@ -40,22 +40,27 @@ class MainWindow(QMainWindow):
         self.password_input.setPlaceholderText("Enter your password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        # Create buttons for registration, login, and deleting users
-        self.register_button = QPushButton("Register")
-        self.register_button.setFixedSize(100, 40)
-        self.register_button.clicked.connect(self.register_user)
-
-        self.login_button = QPushButton("Log In")
-        self.login_button.setFixedSize(100, 40)
-        self.login_button.clicked.connect(self.login_user)
-
-        self.delete_button = QPushButton("Delete User")
-        self.delete_button.setFixedSize(100, 40)
-        self.delete_button.clicked.connect(self.delete_user)
+        # Create buttons:
+        # registration
+        self.register = QPushButton("Register")
+        self.register.setFixedSize(100, 40)
+        self.register.clicked.connect(self.register_user)
+        # login
+        self.login = QPushButton("Log In")
+        self.login.setFixedSize(100, 40)
+        self.login.clicked.connect(self.login_user)
+        # Delete users
+        self.delete = QPushButton("Delete User")
+        self.delete.setFixedSize(100, 40)
+        self.delete.clicked.connect(self.delete_user)
+        # Exit button
+        self.exit = QPushButton("Exit")
+        self.exit.setFixedSize(100, 40)
+        self.exit.clicked.connect(self.exit_program)
 
         # Connect the Enter key to log in button
         shortcut = QShortcut(QKeySequence(Qt.Key.Key_Return), self)  # Key_Return refers to enter key
-        shortcut.activated.connect(self.login_button.click)
+        shortcut.activated.connect(self.login.click)
 
         # Create a layout and add the widgets
         main_layout = QVBoxLayout()  # Vertical layout
@@ -67,9 +72,9 @@ class MainWindow(QMainWindow):
 
         # Create a horizontal layout for the buttons
         button_layout = QHBoxLayout()
-        button_layout.addWidget(self.register_button, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
-        button_layout.addWidget(self.login_button, alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignTop)
-        button_layout.addWidget(self.delete_button, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        button_layout.addWidget(self.register, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
+        button_layout.addWidget(self.login, alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignTop)
+        button_layout.addWidget(self.delete, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
         # Success message QLabel
         self.success_msg = QLabel("")
@@ -83,6 +88,7 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.password_input, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         main_layout.addLayout(button_layout)
         main_layout.addWidget(self.success_msg, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(self.exit, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
 
         # Set the layout for the central widget
         central_widget = QWidget()
@@ -167,7 +173,7 @@ class MainWindow(QMainWindow):
                     stored_username, stored_password = line.strip().split(',')
                     if stored_username == username and stored_password == password:
                         self.success_msg.setText("Login successful!")
-                        self.open_application_window()
+                        self.open_application_window(username)
                         return
 
                 QMessageBox.warning(self, "Error", "Invalid username or password.")
@@ -176,14 +182,14 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "Error", "Please fill in both fields.")
 
-    def open_application_window(self):
-        # Hide the login window
-        self.hide()
-
-        # Open the main application window
-        self.app_window = ApplicationWindow()
+    def open_application_window(self, username):
+        # Pass the username to show which user is logged in
+        self.app_window = ApplicationWindow(username)
         self.app_window.show()
 
+    # Exit the entire program
+    def exit_program(self):
+        QApplication.quit()
 
 # Main function to run the application
 def main():
