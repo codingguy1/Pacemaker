@@ -7,9 +7,15 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
+<<<<<<< HEAD
  * Model version                  : 1.67
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
  * C/C++ source code generated on : Fri Oct 25 18:17:35 2024
+=======
+ * Model version                  : 1.62
+ * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
+ * C/C++ source code generated on : Fri Oct 25 13:34:12 2024
+>>>>>>> eb16eb23dd2aa3fe60dbf091dcd9fa5082503be1
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
