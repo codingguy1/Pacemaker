@@ -28,6 +28,20 @@
       SrcLocation  ""\
     }\
     ChartData {\
+      Name         "is_AAI"\
+      Description  "StateActiveChild"\
+      SFName       ""\
+      Path         "AAI"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "is_VVI"\
+      Description  "StateActiveChild"\
+      SFName       ""\
+      Path         "VVI"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
       Name         "is_AOO"\
       Description  "StateActiveChild"\
       SFName       ""\
@@ -39,20 +53,6 @@
       Description  "StateActiveChild"\
       SFName       ""\
       Path         "VOO"\
-      SrcLocation  ""\
-    }\
-    ChartData {\
-      Name         "is_VVI"\
-      Description  "StateActiveChild"\
-      SFName       ""\
-      Path         "VVI"\
-      SrcLocation  ""\
-    }\
-    ChartData {\
-      Name         "is_AAI"\
-      Description  "StateActiveChild"\
-      SFName       ""\
-      Path         "AAI"\
       SrcLocation  ""\
     }\
     ChartData {\

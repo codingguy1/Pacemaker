@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.44
+ * Model version                  : 1.48
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Oct 23 18:47:39 2024
+ * C/C++ source code generated on : Fri Oct 25 00:59:22 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -80,10 +80,10 @@ typedef struct {
   uint32_T temporalCounter_i1;         /* '<Root>/Chart' */
   uint8_T is_active_c3_Assignment1;    /* '<Root>/Chart' */
   uint8_T is_c3_Assignment1;           /* '<Root>/Chart' */
+  uint8_T is_AAI;                      /* '<Root>/Chart' */
+  uint8_T is_VVI;                      /* '<Root>/Chart' */
   uint8_T is_AOO;                      /* '<Root>/Chart' */
   uint8_T is_VOO;                      /* '<Root>/Chart' */
-  uint8_T is_VVI;                      /* '<Root>/Chart' */
-  uint8_T is_AAI;                      /* '<Root>/Chart' */
 } DW_Assignment1_T;
 
 /* Parameters (default storage) */
@@ -109,25 +109,25 @@ struct P_Assignment1_T_ {
   real_T DigitalRead1_SampleTime;      /* Expression: SampleTime
                                         * Referenced by: '<S2>/Digital Read1'
                                         */
-  real_T Constant6_Value;              /* Expression: 3
+  real_T Constant6_Value;              /* Expression: 1
                                         * Referenced by: '<S2>/Constant6'
                                         */
-  real_T Constant5_Value;              /* Expression: 1
+  real_T Constant5_Value;              /* Expression: 20
                                         * Referenced by: '<S2>/Constant5'
                                         */
-  real_T Constant4_Value;              /* Expression: 1
+  real_T Constant4_Value;              /* Expression: 20
                                         * Referenced by: '<S2>/Constant4'
                                         */
   real_T Constant3_Value;              /* Expression: 120
                                         * Referenced by: '<S2>/Constant3'
                                         */
-  real_T Constant2_Value;              /* Expression: 320
+  real_T Constant2_Value;              /* Expression: 0
                                         * Referenced by: '<S2>/Constant2'
                                         */
-  real_T Constant1_Value;              /* Expression: 320
+  real_T Constant1_Value;              /* Expression: 0
                                         * Referenced by: '<S2>/Constant1'
                                         */
-  real_T Constant7_Value;              /* Expression: 80
+  real_T Constant7_Value;              /* Expression: 100
                                         * Referenced by: '<S2>/Constant7'
                                         */
   real_T Constant9_Value;              /* Expression: 0

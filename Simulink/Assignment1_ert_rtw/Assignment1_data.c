@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.44
+ * Model version                  : 1.48
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Oct 23 18:47:39 2024
+ * C/C++ source code generated on : Fri Oct 25 00:59:22 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -57,40 +57,40 @@ P_Assignment1_T Assignment1_P = {
    */
   -1.0,
 
-  /* Expression: 3
+  /* Expression: 1
    * Referenced by: '<S2>/Constant6'
    */
-  3.0,
+  1.0,
 
-  /* Expression: 1
+  /* Expression: 20
    * Referenced by: '<S2>/Constant5'
    */
-  1.0,
+  20.0,
 
-  /* Expression: 1
+  /* Expression: 20
    * Referenced by: '<S2>/Constant4'
    */
-  1.0,
+  20.0,
 
   /* Expression: 120
    * Referenced by: '<S2>/Constant3'
    */
   120.0,
 
-  /* Expression: 320
+  /* Expression: 0
    * Referenced by: '<S2>/Constant2'
    */
-  320.0,
+  0.0,
 
-  /* Expression: 320
+  /* Expression: 0
    * Referenced by: '<S2>/Constant1'
    */
-  320.0,
+  0.0,
 
-  /* Expression: 80
+  /* Expression: 100
    * Referenced by: '<S2>/Constant7'
    */
-  80.0,
+  100.0,
 
   /* Expression: 0
    * Referenced by: '<S2>/Constant9'

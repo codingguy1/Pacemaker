@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.44
+ * Model version                  : 1.48
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Oct 23 18:47:39 2024
+ * C/C++ source code generated on : Fri Oct 25 00:59:22 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -91,8 +91,12 @@ static void Assignm_enter_atomic_AOO_Charge(void)
 /* Function for Chart: '<Root>/Chart' */
 static void Assignment1_AAI(const boolean_T *DigitalRead)
 {
+  boolean_T sf_internal_predicateOutput;
+
   /* Constant: '<S2>/Constant6' incorporates:
    *  Constant: '<S2>/Constant2'
+   *  Constant: '<S2>/Constant3'
+   *  Constant: '<S2>/Constant5'
    */
   if (Assignment1_P.Constant6_Value != 3.0) {
     Assignment1_DW.is_AAI = Assignment1_IN_NO_ACTIVE_CHILD;
@@ -133,8 +137,6 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
         Assignment1_DW.is_AAI = Assignment1_IN_AOO_Charge;
         Assignm_enter_atomic_AOO_Charge();
       }
-
-      /* End of Constant: '<S2>/Constant5' */
       break;
 
      case Assignment1_IN_delay:
@@ -154,8 +156,15 @@ static void Assignment1_AAI(const boolean_T *DigitalRead)
         Assignment1_DW.is_AAI = Assignment1_IN_delay;
         Assignment1_DW.temporalCounter_i1 = 0U;
       } else {
-        if ((Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-             (Assignment1_P.Constant2_Value)) && (!*DigitalRead)) {
+        if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil((60000.0 /
+              Assignment1_P.Constant3_Value - Assignment1_P.Constant5_Value) +
+             Assignment1_P.Constant2_Value)) {
+          sf_internal_predicateOutput = !*DigitalRead;
+        } else {
+          sf_internal_predicateOutput = false;
+        }
+
+        if (sf_internal_predicateOutput) {
           Assignment1_DW.is_AAI = Assignment1_IN_Atrial_Pacing;
           Assignment1_DW.temporalCounter_i1 = 0U;
 
@@ -560,9 +569,10 @@ void Assignment1_step(void)
             Assignment1_DW.is_VVI = Assignment1_IN_delay;
             Assignment1_DW.temporalCounter_i1 = 0U;
           } else {
-            if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil
-                (Assignment1_P.Constant1_Value + Assignment1_P.Constant9_Value))
-            {
+            if (Assignment1_DW.temporalCounter_i1 >= (uint32_T)ceil(((60000.0 /
+                   Assignment1_P.Constant3_Value - Assignment1_P.Constant4_Value)
+                  + Assignment1_P.Constant1_Value) +
+                 Assignment1_P.Constant9_Value)) {
               Assignment1_DW.is_VVI = Assignmen_IN_Ventricular_Pacing;
               Assignment1_DW.temporalCounter_i1 = 0U;
               Assignment1_B.PACING_REF_PWM = Assignment1_P.Constant7_Value;

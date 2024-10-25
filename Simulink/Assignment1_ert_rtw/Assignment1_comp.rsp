@@ -1,27 +1,27 @@
--ID:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink
--IC:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include
--ID:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink/Assignment1_ert_rtw
--IC:/Program\ Files/MATLAB/R2020a/extern/include
--IC:/Program\ Files/MATLAB/R2020a/simulink/include
--IC:/Program\ Files/MATLAB/R2020a/rtw/c/src
--IC:/Program\ Files/MATLAB/R2020a/rtw/c/src/ext_mode/common
--IC:/Program\ Files/MATLAB/R2020a/rtw/c/ert
--IC:/Freescale/KSDK_1.2.0/platform/CMSIS/Include
--IC:/Program\ Files/MATLAB/R2020a/rtw/c/src/ext_mode/serial
--IC:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/scheduler/include
--IC:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/include
--IC:/Freescale/KSDK_1.2.0/platform/devices
--IC:/Freescale/KSDK_1.2.0/platform/drivers/inc
--IC:/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup
--IC:/Freescale/KSDK_1.2.0/platform/hal/inc
--IC:/Freescale/KSDK_1.2.0/platform/osa/inc
--IC:/Freescale/KSDK_1.2.0/platform/system/inc
--IC:/Freescale/KSDK_1.2.0/platform/system/src/clock/MK64F12
--IC:/Freescale/KSDK_1.2.0/platform/utilities/inc
--IC:/Freescale/KSDK_1.2.0/platform/utilities/inc/virtual_com
--IC:/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/port
--IC:/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/src/include
--IC:/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/src/include/ipv4
--IC:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/include
--IC:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/INC
--IC:/ProgramData/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/SRC
+-I/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink
+-I/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include
+-I/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw
+-I/Applications/MATLAB_R2020a.app/extern/include
+-I/Applications/MATLAB_R2020a.app/simulink/include
+-I/Applications/MATLAB_R2020a.app/rtw/c/src
+-I/Applications/MATLAB_R2020a.app/rtw/c/src/ext_mode/common
+-I/Applications/MATLAB_R2020a.app/rtw/c/ert
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/CMSIS/Include
+-I/Applications/MATLAB_R2020a.app/rtw/c/src/ext_mode/serial
+-I/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/scheduler/include
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/include
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/drivers/inc
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/devices/MK64F12/startup
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/hal/inc
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/osa/inc
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/system/inc
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/system/src/clock/MK64F12
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/utilities/inc
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/platform/utilities/inc/virtual_com
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/port
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/src/include
+-I/Users/changhaibian/Desktop/Freescale/KSDK_1.2.0/middleware/tcpip/lwip/src/include/ipv4
+-I/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/armcortexmbase/cmsis_rtos_rtx/include
+-I/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/INC
+-I/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/3P.instrset/cmsis.instrset/CMSIS/RTOS/RTX/SRC

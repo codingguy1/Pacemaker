@@ -1,32 +1,32 @@
 Assignment1.o: \
- D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1.c \
- D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1.h \
- D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/rtwtypes.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
- D:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h \
- D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_types.h \
- C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
- D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_private.h
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1.c \
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1.h \
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h \
+ /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h \
+ /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h \
+ /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h \
+ /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h \
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1_types.h \
+ /Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h \
+ /Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1_private.h
 
-D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1.h:
+/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1.h:
 
-D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/rtwtypes.h:
+/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h:
+/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_AnalogIn.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h:
+/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h:
 
-D:/Bill/SFWRENG\ 3K04/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h:
+/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/rtwtypes.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h:
+/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_digitalIO.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h:
+/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_PWM.h:
 
-D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_types.h:
+/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1_types.h:
 
-C:/ProgramData/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h:
+/Users/changhaibian/Documents/MATLAB/SupportPackages/R2020a/toolbox/target/supportpackages/freedomk64f/include/MW_SVD.h:
 
-D:/Bill/SFWREN~1/PACEMA~1/Simulink/Assignment1_ert_rtw/Assignment1_private.h:
+/Users/changhaibian/Desktop/3K04_2024/Assignment1/Pacemaker/Simulink/Assignment1_ert_rtw/Assignment1_private.h:
