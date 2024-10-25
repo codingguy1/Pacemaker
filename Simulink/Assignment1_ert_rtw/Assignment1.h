@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
- * Model version                  : 1.67
+ * Model version                  : 1.62
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri Oct 25 18:17:35 2024
+ * C/C++ source code generated on : Fri Oct 25 13:34:12 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -54,6 +54,8 @@ typedef struct {
   real_T PACING_REF_PWM;               /* '<Root>/Chart' */
   real_T ATR_CMP_REF_PWM;              /* '<Root>/Chart' */
   real_T VENT_CMP_REF_PWM;             /* '<Root>/Chart' */
+  real_T u;
+  real_T u_m;
 } B_Assignment1_T;
 
 /* Block states (default storage) for system '<Root>' */
@@ -109,7 +111,7 @@ struct P_Assignment1_T_ {
   real_T DigitalRead1_SampleTime;      /* Expression: SampleTime
                                         * Referenced by: '<S2>/Digital Read1'
                                         */
-  real_T Mode_Value;                   /* Expression: 4
+  real_T Mode_Value;                   /* Expression: 2
                                         * Referenced by: '<S2>/Mode'
                                         */
   real_T Constant5_Value;              /* Expression: 20
@@ -118,13 +120,13 @@ struct P_Assignment1_T_ {
   real_T Constant4_Value;              /* Expression: 20
                                         * Referenced by: '<S2>/Constant4'
                                         */
-  real_T Constant3_Value;              /* Expression: 120
+  real_T Constant3_Value;              /* Expression: 180
                                         * Referenced by: '<S2>/Constant3'
                                         */
-  real_T Constant2_Value;              /* Expression: 250
+  real_T Constant2_Value;              /* Expression: 0
                                         * Referenced by: '<S2>/Constant2'
                                         */
-  real_T Constant1_Value;              /* Expression: 320
+  real_T Constant1_Value;              /* Expression: 0
                                         * Referenced by: '<S2>/Constant1'
                                         */
   real_T Constant7_Value;              /* Expression: 100
@@ -132,6 +134,9 @@ struct P_Assignment1_T_ {
                                         */
   real_T Constant9_Value;              /* Expression: 0
                                         * Referenced by: '<S2>/Constant9'
+                                        */
+  real_T Constant8_Value;              /* Expression: 0
+                                        * Referenced by: '<S2>/Constant8'
                                         */
 };
 
@@ -178,13 +183,12 @@ extern RT_MODEL_Assignment1_T *const Assignment1_M;
  * '<S4>'   : 'Assignment1/Input/APW Limiter'
  * '<S5>'   : 'Assignment1/Input/ARP Limiter'
  * '<S6>'   : 'Assignment1/Input/Amp Limiter'
- * '<S7>'   : 'Assignment1/Input/LRI Function'
+ * '<S7>'   : 'Assignment1/Input/BPM Limiter'
  * '<S8>'   : 'Assignment1/Input/LRL Limiter'
  * '<S9>'   : 'Assignment1/Input/Mode Limiter'
- * '<S10>'  : 'Assignment1/Input/URL Function'
- * '<S11>'  : 'Assignment1/Input/URL Limiter'
- * '<S12>'  : 'Assignment1/Input/VPW Limiter'
- * '<S13>'  : 'Assignment1/Input/VRP Limiter'
+ * '<S10>'  : 'Assignment1/Input/URL Limiter'
+ * '<S11>'  : 'Assignment1/Input/VPW Limiter'
+ * '<S12>'  : 'Assignment1/Input/VRP Limiter'
  */
 #endif                                 /* RTW_HEADER_Assignment1_h_ */
 
