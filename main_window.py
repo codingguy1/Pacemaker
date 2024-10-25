@@ -183,14 +183,12 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Error", "Please fill in both fields.")
 
     def open_application_window(self, username):
-        # Pass the username to show which user is logged in
+        # Open the main application window and pass the username
         self.app_window = ApplicationWindow(username)
         self.app_window.show()
 
-    # Exit the entire program
     def exit_program(self):
         QApplication.quit()
-
 # Main function to run the application
 def main():
     app = QApplication(sys.argv) # Create an instance of QApplication

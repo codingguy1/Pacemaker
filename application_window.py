@@ -59,10 +59,18 @@ class ApplicationWindow(QMainWindow):
         connection_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.connection_widget))
         toolbar.addAction(connection_action)
 
+        #Placeholder for pacing mode selection
+        self.pacing_mode_combo = None
+        self.current_pacing_mode = None
+        
         # Add Exit button to the toolbar
         exit_action = QAction("Exit", self)
         exit_action.triggered.connect(self.exit)
         toolbar.addAction(exit_action)
+
+    def show_pacing_modes(self):
+        #switch to pacing modes widget
+        self.central_stack.setCurrentWidget(self.pacing_modes_widget)
 
     # Section: Parameters Widget
     # ---------------------------------
@@ -83,6 +91,43 @@ class ApplicationWindow(QMainWindow):
 
         widget.setLayout(layout)
         return widget
+    def update_parameters(self):
+        mode = self.pacing_mode_combo.currentText()
+        self.current_pacing_mode = mode
+        self.update_egram_label()
+ 
+        if mode == "AOO":
+            self.set_parameters(lower_rate_limit="60", upper_rate_limit="100", atrial_amplitude="5", atrial_pulse_width="0.5", ventricular_amplitude="0", ventricular_pulse_width="0", vrp="200", arp="200")
+        elif mode == "VOO":
+            self.set_parameters(lower_rate_limit="60", upper_rate_limit="100", atrial_amplitude="0", atrial_pulse_width="0", ventricular_amplitude="5", ventricular_pulse_width="0.5", vrp="200", arp="200")
+        elif mode == "AAI":
+            self.set_parameters(lower_rate_limit="60", upper_rate_limit="100", atrial_amplitude="5", atrial_pulse_width="0.5", ventricular_amplitude="0", ventricular_pulse_width="0", vrp="200", arp="200")
+        elif mode == "VVI":
+            self.set_parameters(lower_rate_limit="60", upper_rate_limit="100", atrial_amplitude="0", atrial_pulse_width="0", ventricular_amplitude="5", ventricular_pulse_width="0.5", vrp="200", arp="200")
+        else:
+            self.clear_parameters()
+ 
+    def set_parameters(self, lower_rate_limit, upper_rate_limit, atrial_amplitude, atrial_pulse_width, ventricular_amplitude, ventricular_pulse_width, vrp, arp):
+        #set parameters based on the selected mode
+        lower_rate_limit.setText(lower_rate_limit)
+        upper_rate_limit.setText(upper_rate_limit)
+        atrial_amplitude.setText(atrial_amplitude)
+        atrial_pulse_width.setText(atrial_pulse_width)
+        ventricular_amplitude.setText(ventricular_amplitude)
+        ventricular_pulse_width.setText(ventricular_pulse_width)
+        vrp.setText(vrp)
+        arp.setText(arp)
+ 
+    def clear_parameters(self):
+        #clears parameter fields based on the selected mode
+        self.lower_rate_limit.clear()
+        self.upper_rate_limit.clear()
+        self.atrial_amplitude.clear()
+        self.atrial_pulse_width.clear()
+        self.ventricular_amplitude.clear()
+        self.ventricular_pulse_width.clear()
+        self.vrp.clear()
+        self.arp.clear()
 
     # Section: Pacing Modes Widget
     # ---------------------------------
@@ -116,6 +161,11 @@ class ApplicationWindow(QMainWindow):
         widget.setLayout(layout)
         return widget
     
+    def update_egram_label(self):
+        #update electrogram widget label with the current pacing mode
+        if hasattr(self, 'egram label'):
+            self.egram_label.setText(f"Current Pacing Mode: {self.current_pacing_mode}")
+            
     # Section: Device Connect Status Widget
     # ---------------------------------
     def create_connection(self):
