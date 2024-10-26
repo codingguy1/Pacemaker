@@ -7,15 +7,9 @@
  *
  * Code generated for Simulink model 'Assignment1'.
  *
-<<<<<<< HEAD
- * Model version                  : 1.67
+ * Model version                  : 1.68
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri Oct 25 18:17:35 2024
-=======
- * Model version                  : 1.62
- * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri Oct 25 13:34:12 2024
->>>>>>> eb16eb23dd2aa3fe60dbf091dcd9fa5082503be1
+ * C/C++ source code generated on : Fri Oct 25 22:40:57 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -28,10 +22,6 @@
 #include "rtwtypes.h"
 #include "Assignment1.h"
 
-<<<<<<< HEAD
-=======
-extern void Assignment1_APWLimiter(real_T rtu_u, real_T *rty_y);
->>>>>>> eb16eb23dd2aa3fe60dbf091dcd9fa5082503be1
 extern void Assignment1_ARPLimiter(real_T rtu_u, real_T *rty_y);
 
 #endif                                 /* RTW_HEADER_Assignment1_private_h_ */
