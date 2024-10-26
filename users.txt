@@ -1,7 +1,4 @@
 Max,Max
 Test,Test
-<<<<<<< HEAD
 1,1
-=======
 Barry,123
->>>>>>> 22195d9da223d5d1454257f59338e716e90d322f
