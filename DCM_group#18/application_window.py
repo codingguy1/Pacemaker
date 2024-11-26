@@ -4,14 +4,19 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
-# Sub Class to customize pacemaker's application window
+# Application window for pacemaker
 class ApplicationWindow(QMainWindow):
     def __init__(self, username):
         super().__init__()
 
-        # Section: Initialization
-        # ---------------------------------
-        # Parameter fields
+        # Set up window title and size
+        self.setWindowTitle("Pacing Mode Selection")
+        self.setFixedSize(QSize(1000, 850))  
+
+        # Store the connected port
+        self.connected_port = None  
+
+        # Parameter fields and ranges
         self.fields = {
             "Lower Rate Limit": QLineEdit(),
             "Upper Rate Limit": QLineEdit(),
@@ -22,9 +27,6 @@ class ApplicationWindow(QMainWindow):
             "VRP": QLineEdit(),
             "ARP": QLineEdit()
         }
-        self.current_pacing_mode = None  # Set initial pacing mode as none
-
-        # Parameter Ranges
         self.parameter_ranges = {
             "Lower Rate Limit": (30, 175),
             "Upper Rate Limit": (50, 175),
@@ -36,82 +38,54 @@ class ApplicationWindow(QMainWindow):
             "ARP": (150, 500)
         }
 
-        # Window title and dimensions
-        self.setWindowTitle("Application Window")
-        self.setFixedSize(QSize(800, 600))
+        # Create the main layout for pacing mode selection
+        main_layout = QVBoxLayout()
 
-        # Display the logged-in user's name
-        self.username_label = QLabel(f"Logged in as: {username}", self)
+        # Header layout for username display and exit button
+        header_layout = QHBoxLayout()
+
+        # Username display
+        self.username_label = QLabel(f"Logged in as: {username}")
         self.username_label.setFont(QFont('Arial', 14))
-        self.username_label.setGeometry(10, 550, 300, 30)  # Set position and size of label
+        header_layout.addWidget(self.username_label, alignment=Qt.AlignmentFlag.AlignLeft)
 
-        # Section: Central Stacked Widget
-        # ---------------------------------
-        # Create a central stacked widget to hold different views
-        self.central_stack = QStackedWidget()
-        self.setCentralWidget(self.central_stack)
+        # Exit Button 
+        self.exit_button = QPushButton("Exit")
+        self.exit_button.setFixedSize(120, 30)
+        self.exit_button.clicked.connect(self.exit_program)
+        header_layout.addStretch()  # stretch exit button to the right
+        header_layout.addWidget(self.exit_button)
 
-        # Create individual widgets for each functionality
-        self.parameters_widget = self.create_parameters_widget()
-        self.egram_widget = self.create_egram_widget()
-        self.connection_widget = self.create_connection()
+        # header layout for login user display and exit button
+        main_layout.addLayout(header_layout)
 
-        # Add each widget to the central stacked widget
-        self.central_stack.addWidget(self.parameters_widget)
-        self.central_stack.addWidget(self.egram_widget)
-        self.central_stack.addWidget(self.connection_widget)
+        # Spacer for better display
+        main_layout.addSpacing(30)
 
-        # Section: Toolbar
-        # ---------------------------------
-        # Create Toolbar
-        toolbar = QToolBar("Main Toolbar")
-        self.addToolBar(toolbar)
-
-        # Add actions to the toolbar
-        parameters_action = QAction("Parameters", self)
-        parameters_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.parameters_widget))
-        toolbar.addAction(parameters_action)
-
-        egram_action = QAction("Electrogram", self)
-        egram_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.egram_widget))
-        toolbar.addAction(egram_action)
-
-        connection_action = QAction("Device Connection", self)
-        connection_action.triggered.connect(lambda: self.central_stack.setCurrentWidget(self.connection_widget))
-        toolbar.addAction(connection_action)
-
-        # Add Exit button to the toolbar
-        exit_action = QAction("Exit", self)
-        exit_action.triggered.connect(self.exit)
-        toolbar.addAction(exit_action)
-
-    # Section: Parameters Widget
-    # ---------------------------------
-    def create_parameters_widget(self):
-        # Create a widget for setting programmable parameters
-        widget = QWidget()
-        layout = QVBoxLayout()
-
-        # Create a layout for the pacing mode selection at the top
+        # Pacing Mode Selection Dropdown
         pacing_mode_layout = QHBoxLayout()
         pacing_mode_label = QLabel("Select Pacing Mode:")
-        pacing_mode_label.setFont(QFont('Arial', 12))
+        pacing_mode_label.setFont(QFont('Arial', 16))  
 
-        # Dropdown menu for pacing modes
         self.pacing_mode_combo = QComboBox()
-        self.pacing_mode_combo.addItems(["None", "AOO", "VOO", "AAI", "VVI"])  # Added 'None' as the first option
+        self.pacing_mode_combo.setFont(QFont('Arial', 14)) # Combo box for drop down menu
+        self.pacing_mode_combo.setFixedSize(250, 40) 
+        self.pacing_mode_combo.addItems(["None", "AOO", "VOO", "AAI", "VVI"])
         self.pacing_mode_combo.currentIndexChanged.connect(self.update_parameters)
 
-        # Add label and drop down menu to the layout
+        pacing_mode_layout.addStretch()
         pacing_mode_layout.addWidget(pacing_mode_label)
         pacing_mode_layout.addWidget(self.pacing_mode_combo)
+        pacing_mode_layout.addStretch()
 
-        # Create a form layout for parameter fields
-        self.param_form_layout = QFormLayout()
-        layout.addLayout(pacing_mode_layout)
-        layout.addLayout(self.param_form_layout)
+        # Add pacing mode layout to the main layout
+        main_layout.addLayout(pacing_mode_layout)
 
-        # Units for each parameter
+        # Spacer for better diplay
+        main_layout.addSpacing(50)
+
+        # Parameter Fields Layout
+        param_layout = QVBoxLayout()
         units = {
             "Lower Rate Limit": "ppm",
             "Upper Rate Limit": "ppm",
@@ -123,123 +97,115 @@ class ApplicationWindow(QMainWindow):
             "ARP": "ms"
         }
 
-        # Create dictionaries to hold field containers and labels
+        # Add fields with labels and units
         self.field_containers = {}
         self.field_labels = {}
-
-        # Add fields to the form layout with units
         for field_name, field_widget in self.fields.items():
-            # Create a horizontal layout to hold the field and the unit label
             field_layout = QHBoxLayout()
-            field_layout.addWidget(field_widget)
 
-            # Add unit label if defined for the field
-            unit_label = QLabel(units.get(field_name, ""))
-            unit_label.setFont(QFont('Arial', 10))
-            field_layout.addWidget(unit_label)
-
-            # Create a container widget for the field and unit
-            container = QWidget()
-            container.setLayout(field_layout)
-
-            # Store the container and label 
-            self.field_containers[field_name] = container
             label = QLabel(f"{field_name}:")
+            label.setFont(QFont('Arial', 12))
             self.field_labels[field_name] = label
 
-            # Add the label and container to the form layout
-            self.param_form_layout.addRow(label, container)
+            unit_label = QLabel(units.get(field_name, ""))
+            unit_label.setFont(QFont('Arial', 10))
 
-        # Add Apply Button to validate input
+            field_layout.addStretch()
+            field_layout.addWidget(label)
+            field_layout.addWidget(field_widget)
+            field_layout.addWidget(unit_label)
+            field_layout.addStretch()
+
+            container = QWidget()
+            container.setLayout(field_layout)
+            self.field_containers[field_name] = container
+
+            param_layout.addWidget(container)
+
+        main_layout.addLayout(param_layout)
+
+        # Spacer for better display
+        main_layout.addSpacing(50)
+
+        # Layout for Apply Button and Electrogram Button 
+        button_layout = QHBoxLayout()
+
+        # Apply Button for Parameter Validation / Save parameter
         self.apply_button = QPushButton("Apply")
+        self.apply_button.setFixedSize(200, 60)
         self.apply_button.clicked.connect(self.validate_parameters)
-        layout.addWidget(self.apply_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        button_layout.addStretch()
+        button_layout.addWidget(self.apply_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        widget.setLayout(layout)
-        return widget
+        # Electrogram Button to dispaly plot
+        self.egram_button = QPushButton("Open Electrogram Display")
+        self.egram_button.setFixedSize(200, 60)
+        self.egram_button.clicked.connect(self.open_egram_window)
+        button_layout.addWidget(self.egram_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        button_layout.addStretch()
 
-    # Function to valiadate whether the input value is out of range
+        # Add button layout to main layout
+        main_layout.addLayout(button_layout)
+
+        # Spacer for better display
+        main_layout.addSpacing(30)
+
+        # Connection Status at Bottom Right Corner
+        connection_layout = QHBoxLayout()
+        self.status_msg = QLabel("Device not connected")
+        self.status_msg.setFont(QFont('Arial', 12))
+        self.status_msg.setStyleSheet("color: red;")
+        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button.setFixedSize(120, 50)
+        self.refresh_button.clicked.connect(self.check_connection_status)
+
+        connection_layout.addStretch()
+        connection_layout.addWidget(self.status_msg, alignment=Qt.AlignmentFlag.AlignRight)
+        connection_layout.addWidget(self.refresh_button, alignment=Qt.AlignmentFlag.AlignRight)
+
+        main_layout.addLayout(connection_layout)
+
+        # Set the layout in a central widget
+        central_widget = QWidget()
+        central_widget.setLayout(main_layout)
+        self.setCentralWidget(central_widget)
+
+    # Method to validate parameters
     def validate_parameters(self):
-        for field_name, (min, max) in self.parameter_ranges.items():
+        for field_name, (min_value, max_value) in self.parameter_ranges.items():
             field_text = self.fields[field_name].text()
             if field_text:  # Only check if there is an input
                 try:
                     value = float(field_text)
-                    if not (min <= value <= max):
-                        QMessageBox.warning(self, "Input Error", f"{field_name} is out of range ({min}-{max}).")
-                        return  # Exit on the first error
+                    if not (min_value <= value <= max_value):
+                        QMessageBox.warning(self, "Input Error", f"{field_name} is out of range ({min_value}-{max_value}).")
+                        return
                 except ValueError:
                     QMessageBox.warning(self, "Input Error", f"Invalid input for {field_name}. Please enter a numeric value.")
                     return
 
         QMessageBox.information(self, "Success", "All parameters are within the valid range.")
 
-
+    # Method to update parameters for the selected pacing mode
     def update_parameters(self):
-        # Define the relevant parameters to show for each mode
         mode = self.pacing_mode_combo.currentText()
         self.current_pacing_mode = mode
 
-        self.update_egram_label()  # Update the Egram label with the current pacing mode
+        # Define visibility for each pacing mode
+        visibility_dict = {
+            "Lower Rate Limit": mode in ["AOO", "VOO", "AAI", "VVI"],
+            "Upper Rate Limit": mode in ["AOO", "VOO", "AAI", "VVI"],
+            "Atrial Amplitude": mode in ["AOO", "AAI"],
+            "Atrial Pulse Width": mode in ["AOO", "AAI"],
+            "Ventricular Amplitude": mode in ["VOO", "VVI"],
+            "Ventricular Pulse Width": mode in ["VOO", "VVI"],
+            "VRP": mode in ["AAI", "VVI"],
+            "ARP": mode == "AAI"
+        }
+        self.set_field_visibility(visibility_dict)
 
-        # Define specified parameters for each pacing mode
-        if mode == "AOO":
-            self.set_field_visibility({
-                "Lower Rate Limit": True,
-                "Upper Rate Limit": True,
-                "Atrial Amplitude": True,
-                "Atrial Pulse Width": True,
-                "Ventricular Amplitude": False,
-                "Ventricular Pulse Width": False,
-                "VRP": False,
-                "ARP": False
-            })
-            self.set_nominal_value("60", "120", "3.5", "0.4", "", "", "", "")
-
-        elif mode == "AAI":
-            self.set_field_visibility({
-                "Lower Rate Limit": True,
-                "Upper Rate Limit": True,
-                "Atrial Amplitude": True,
-                "Atrial Pulse Width": True,
-                "Ventricular Amplitude": False,
-                "Ventricular Pulse Width": False,
-                "VRP": True,
-                "ARP": True
-            })
-            self.set_nominal_value("60", "120", "3.5", "0.4", "", "", "320", "250")
-
-        elif mode == "VOO":
-            self.set_field_visibility({
-                "Lower Rate Limit": True,
-                "Upper Rate Limit": True,
-                "Atrial Amplitude": False,
-                "Atrial Pulse Width": False,
-                "Ventricular Amplitude": True,
-                "Ventricular Pulse Width": True,
-                "VRP": False,
-                "ARP": False
-            })
-            self.set_nominal_value("60", "120", "", "", "3.5", "0.4", "", "")
-
-        elif mode == "VVI":
-            self.set_field_visibility({
-                "Lower Rate Limit": True,
-                "Upper Rate Limit": True,
-                "Atrial Amplitude": False,
-                "Atrial Pulse Width": False,
-                "Ventricular Amplitude": True,
-                "Ventricular Pulse Width": True,
-                "VRP": True,
-                "ARP": False
-            })
-            self.set_nominal_value("60", "120", "", "", "3.5", "0.4", "320", "")
-
-        else:
-            self.clear_parameters()
-
+    # Method to set visibility of parameter fields
     def set_field_visibility(self, visibility_dict):
-        # Set visibility for each parameter field container and label 
         for field_name, is_visible in visibility_dict.items():
             container = self.field_containers.get(field_name)
             label = self.field_labels.get(field_name)
@@ -248,108 +214,42 @@ class ApplicationWindow(QMainWindow):
             if label:
                 label.setVisible(is_visible)
 
-    def set_nominal_value(self, lower_rate_limit, upper_rate_limit, atrial_amplitude, atrial_pulse_width, ventricular_amplitude, ventricular_pulse_width, vrp, arp):
-        # Set parameter values in the QLineEdit widgets only for visible fields
-        if self.fields["Lower Rate Limit"].isVisible():
-            self.fields["Lower Rate Limit"].setText(lower_rate_limit)
-        if self.fields["Upper Rate Limit"].isVisible():
-            self.fields["Upper Rate Limit"].setText(upper_rate_limit)
-        if self.fields["Atrial Amplitude"].isVisible():
-            self.fields["Atrial Amplitude"].setText(atrial_amplitude)
-        if self.fields["Atrial Pulse Width"].isVisible():
-            self.fields["Atrial Pulse Width"].setText(atrial_pulse_width)
-        if self.fields["Ventricular Amplitude"].isVisible():
-            self.fields["Ventricular Amplitude"].setText(ventricular_amplitude)
-        if self.fields["Ventricular Pulse Width"].isVisible():
-            self.fields["Ventricular Pulse Width"].setText(ventricular_pulse_width)
-        if self.fields["VRP"].isVisible():
-            self.fields["VRP"].setText(vrp)
-        if self.fields["ARP"].isVisible():
-            self.fields["ARP"].setText(arp)
+    # Method to create and open electrogram display window
+    def open_egram_window(self):
+        egram_window = QWidget()
+        egram_window.setWindowTitle("Electrogram Display")
+        egram_window.setFixedSize(QSize(500, 400))
 
-    def clear_parameters(self):
-        # Clears all fields in the form layout
-        for field_widget in self.fields.values():
-            field_widget.clear()
-
-    def update_egram_label(self):
-        # Update electrogram widget label with the current pacing mode
-        if hasattr(self, 'egram_label'):
-            self.egram_label.setText(f"Current Pacing Mode: {self.current_pacing_mode}")
-
-    # Section: Electrogram Widget
-    # ---------------------------------
-    def create_egram_widget(self):
-        # Create a widget for real-time electrogram data (Placeholder)
-        widget = QWidget()
         layout = QVBoxLayout()
+        egram_label = QLabel("Current Pacing Mode: None")
+        egram_label.setFont(QFont('Arial', 12))
+        layout.addWidget(egram_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
-        # Add a label to display the current pacing mode
-        self.egram_label = QLabel("Current Pacing Mode: None")
-        self.egram_label.setFont(QFont('Arial', 12))
-        layout.addWidget(self.egram_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        egram_graph = QLabel("Insert Electrogram Here")
+        egram_graph.setFont(QFont('Arial', 12))
+        layout.addWidget(egram_graph, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Add the egram graph in the future
-        self.egram_graph = QLabel("Insert Electrogram Here")
-        self.egram_graph.setFont(QFont('Arial', 12))
-        layout.addWidget(self.egram_graph, alignment=Qt.AlignmentFlag.AlignCenter)
+        egram_window.setLayout(layout)
+        egram_window.show()
 
-        widget.setLayout(layout)
-        return widget
-
-    # Section: Device Connect Status Widget
-    # ---------------------------------
-    def create_connection(self):
-        widget = QWidget()
-        layout = QVBoxLayout()
-
-        # Create buttons
-        self.connect_button = QPushButton("Connection Status")
-        self.disconnect_button = QPushButton("Disconnect Telemetry")
-
-        # Set button sizes
-        self.connect_button.setFixedSize(300, 60)
-        self.disconnect_button.setFixedSize(300, 60)
-
-        # Create a single status message label
-        self.status_msg = QLabel("Device not connected")
-        self.status_msg.setFont(QFont('Arial', 12))
-        self.status_msg.setStyleSheet("color: red;")
-        layout.addWidget(self.status_msg, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        # Button layout
-        layout.addWidget(self.connect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom)
-        layout.addWidget(self.disconnect_button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
-    
-        # Connect the buttons to the appropriate slots
-        self.connect_button.clicked.connect(self.check_connection_status)
-        self.disconnect_button.clicked.connect(self.stop_telemetry)
-
-        widget.setLayout(layout)
-        return widget
-
+    # Method to check connection status
     def check_connection_status(self):
-        # Check available serial ports
-        ports = serial.tools.list_ports.comports()
-        for port in ports:
-            # Pacemaker ID (Not tested)
-            if "H00140" in port.description:
-                self.status_msg.setText(f"Connected device: {port.device}")
+        common_ports = ["COM6", "COM5", "COM4", "COM3"]
+        for port in common_ports:
+            try:
+                ser = serial.Serial(port=port, baudrate=115200, timeout=1)
+                ser.close()
+                self.connected_port = port
+                self.status_msg.setText(f"Connected device: {port}")
                 self.status_msg.setStyleSheet("color: green;")
                 return
+            except (serial.SerialException, FileNotFoundError):
+                continue
 
-        # If no device is found
-        self.status_msg.setText(f"Connected device: None")
+        self.connected_port = None
         self.status_msg.setText("Device not connected")
         self.status_msg.setStyleSheet("color: red;")
 
-    def stop_telemetry(self):
-        # Set the logic here when actually connecting with the device
-        # A condition to detect that the telemetry is on
-        self.status_msg.setText("Telemetry is stopped")
-        self.status_msg.setStyleSheet("color: red;")
-
-    # Section: Program exit
-    # ---------------------------------
-    def exit(self):
-        self.hide()
+    # Method to exit the application
+    def exit_program(self):
+        QApplication.quit()

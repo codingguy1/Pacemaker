@@ -1,12 +1,15 @@
 # Pacemaker
-DCM Requirments Assignment 1:
-1. (Done!) Develop an interface that includes a welcome screen, including the ability to register a new user (name and password), and to login as an existing user. A maximum of 10 users should be allowed to be stored locally 
-2. (Done!) The user interface shall be capable of utilizing and managing windows for display of text and graphics 
-3. (Done!) The user interface shall be capable of processing input buttons. 
+Procedure to run the project:
+1. Include the required libary: pyqt6, pyserial
+2. run the main_window.py
 
-4. (Done!) Parameters Section
-The user interface shall be capable of displaying all programmable parameters for review and modification. What we need to do only for this assignment1: Make provision for storing programmable parameter data for checking inputs 
-    Parameters:
+
+
+Assignment 1 Feature:
+1. An interface that includes a welcome screen, including the ability to register a new user (name and password), and to login as an existing user. A maximum of 10 users allowed to be stored locally.
+2. Windows for display of text and graphics and processing input buttons. 
+3. Parameters Section
+Make provision for storing programmable parameter data for checking inputs 
     Lower Rate Limit, 
     Upper Rate Limit, 
     Atrial Ampli-tude, 
@@ -17,25 +20,22 @@ The user interface shall be capable of displaying all programmable parameters fo
     ARP.
     *The complete set is in PACEMAKER document on page 28
 
-5. (Done!) Device Connection Check section
-    (a)The user interface shall be capable of visually indicating when the DCM and the device are communicating.
-    (b)The user interface shall be capable of visually indicating when a different PACEMAKER device is approached than was previously interrogated
+4. Device Connection Check section
+    (a) Visually indicating when the DCM and the device are communicating.
+    (b) Visually indicating when a different PACEMAKER device is approached than was previously interrogated
 
-6. (Done!) Pacing Modes Section
-Develop interfaces to present all of the pacing modes mentioned in Part 1 to the user
+5. Pacing Modes Section
+Develop interfaces to present all of the pacing modes
 
-7. (Done!) Electrogram Section
+6. Electrogram Section
 Develop and document appropriate date structures for egram data required in future assignments.
 
-8. (Done!) Additional Features, Add any if you want
-Implement any other requirements you elicit from the documentation that is not explicitly stated in this assignment document
+7. Additional Features, Add any if you want
     enter key used as a shortcut to log in button
     delet user button for remove existing users
-
-Improvement:
-1. (Done!) Pacing modes has it own specified parameters.
-2. (Done!) Real time shwoing the current pacing mode when runing electrogram.
-3. (Done!) Showing username on the application window.
-4. (Done!) Some way to exit the program.
-5. (Done!) Add range limit for the parameters.
+    Pacing modes has it own specified parameters.
+    Real time shwoing the current pacing mode when runing electrogram.
+    Showing username on the application window.
+    Way to exit the program.
+    Add range limit for the parameters.
 
