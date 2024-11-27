@@ -7,6 +7,7 @@ import pickle
 from ParameterManager import ParameterManager  
 import struct
 import time
+from egram_plot import EgramPlot  # Import the new EgramPlot class
 
 # Application window for pacemaker
 class ApplicationWindow(QMainWindow):
@@ -171,7 +172,13 @@ class ApplicationWindow(QMainWindow):
 
         # Spacer for better display
         main_layout.addSpacing(20)
-
+        
+        # Egram Button to start real-time graphing of atrial/ventricular signals
+        self.egram_button = QPushButton("Egram")
+        self.egram_button.setFixedSize(150, 50)
+        self.egram_button.clicked.connect(self.start_egram)
+        button_layout.addWidget(self.egram_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        
         # Connection Status Check at Bottom Right Corner
         connection_layout = QHBoxLayout()
         self.status_msg = QLabel("Device not connected")
@@ -456,6 +463,13 @@ class ApplicationWindow(QMainWindow):
             QMessageBox.warning(self, "Error", f"Data Unpacking Error: {str(e)}")
         except ValueError as e:
             QMessageBox.warning(self, "Error", f"Data Validation Error: {str(e)}")
+
+    def start_egram(self):
+        if self.connected_port:
+            self.egram_plot = EgramPlot(port=self.connected_port)  # Create and start the Egram plot
+            self.egram_plot.start()
+        else:
+            QMessageBox.warning(self, "Error", "Device not connected. Please connect to start Egram.")
 
     # Method to exit the application
     def exit_program(self):

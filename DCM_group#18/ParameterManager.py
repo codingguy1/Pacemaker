@@ -67,19 +67,19 @@ class ParameterManager:
 
     def getActivityThreshold(self):
         if self.__activity_threshold - 1.13 < 0.01:
-            return 'V-L'
+            return 1.13
         elif self.__activity_threshold - 1.25 < 0.01:
-            return 'L'
+            return 1.25
         elif self.__activity_threshold - 1.4 < 0.01:
-            return 'M-L'
+            return 1.4
         elif self.__activity_threshold - 1.6 < 0.01:
-            return 'M'
+            return 1.6
         elif self.__activity_threshold == 2:
-            return 'M-H'
+            return 2
         elif self.__activity_threshold - 2.4 < 0.01:
-            return 'H'
+            return 2.4
         elif self.__activity_threshold == 3:
-            return 'V-H'
+            return  3
         return 0
 
     def getReactionTime(self):
