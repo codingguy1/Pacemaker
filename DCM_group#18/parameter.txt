@@ -17,3 +17,5 @@ Activity Threshold	            4	f            float	            Activity thresho
 Reaction Time	                1	B            uint8	            Time to increase pacing rate (10-50 sec)
 Response Factor	                1	B            uint8	            Rate of response to sensor input (1-16)
 Recovery Time	                2	f            uint16	            Time to return to base rate (2-16 min)
+
+4B8fHf3H 4*1 + 8*4 + 2 + 4 + 3*2 = 4 + 32 + 2 + 4 + 6 = 48

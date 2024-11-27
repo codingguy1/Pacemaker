@@ -347,7 +347,7 @@ class ApplicationWindow(QMainWindow):
 
             # Define the header and structure format for sending data
             header_format = '<2B'  # Header 
-            data_format = '<4B2f2B2f3Hf2B1H'  # Parameters
+            data_format = '<4B8fHf3H'  # Parameters
 
             # Create the header
             header = struct.pack(header_format, 0x16, 0x55)
@@ -371,7 +371,7 @@ class ApplicationWindow(QMainWindow):
             response_factor = self.parameter_manager.getResponseFactor()
             recovery_time = self.parameter_manager.getRecoveryTime()
 
-            # Pack the data 4B2f2B2f3Hf2B1H
+            # Pack the data 4B8fHf3H
             data = struct.pack(data_format, mode, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
 
             # Print the data sent 
@@ -400,7 +400,7 @@ class ApplicationWindow(QMainWindow):
 
             # Wait and then read response
             time.sleep(0.5)
-            response_data = ser.read(38)  ################## Data Length is HERE!!!
+            response_data = ser.read(48)  ################## Data Length is HERE!!!
             self.read_parameters(response_data)
 
             # Close the serial port
@@ -412,12 +412,12 @@ class ApplicationWindow(QMainWindow):
     # Method to read 
     def read_parameters(self, response_data):
         try:
-            if len(response_data) != 38:
+            if len(response_data) != 48:
                 raise ValueError("Invalid data length received from device.") ################## Data Length is HERE!!!
 
             
             header_format = '<2B'  # Header 
-            data_format = '<4B2f2B2f3Hf2B1H'  # parameters
+            data_format = '<4B8fHf3H'  # parameters
 
             # Unpack header and verify it
             header = struct.unpack(header_format, response_data[:2])
