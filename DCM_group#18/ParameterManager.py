@@ -66,21 +66,23 @@ class ParameterManager:
         return self.__rate_smoothing
 
     def getActivityThreshold(self):
-        if self.__activity_threshold - 1.13 < 0.01:
-            return 1.13
-        elif self.__activity_threshold - 1.25 < 0.01:
-            return 1.25
-        elif self.__activity_threshold - 1.4 < 0.01:
-            return 1.4
-        elif self.__activity_threshold - 1.6 < 0.01:
-            return 1.6
-        elif self.__activity_threshold == 2:
-            return 2
-        elif self.__activity_threshold - 2.4 < 0.01:
-            return 2.4
-        elif self.__activity_threshold == 3:
-            return  3
+        def getActivityThreshold(self):
+            if self.__activity_threshold - 1.13 < 0.01:
+                return 1.13
+            elif self.__activity_threshold - 1.25 < 0.01:
+                return 1.25
+            elif self.__activity_threshold - 1.4 < 0.01:
+                return 1.4
+            elif self.__activity_threshold - 1.6 < 0.01:
+                return 1.6
+            elif self.__activity_threshold == 2:
+                return 2
+            elif self.__activity_threshold - 2.4 < 0.01:
+                return 2.4
+            elif self.__activity_threshold == 3:
+                return 3
         return 0
+
 
     def getReactionTime(self):
         return self.__reaction_time
