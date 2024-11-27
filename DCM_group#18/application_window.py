@@ -298,7 +298,8 @@ class ApplicationWindow(QMainWindow):
         else:
             self.save_user_parameters()
             QMessageBox.information(self, "Success", "Parameters successfully updated!")
-
+            # After updating and saving the parameters, send them to the pacemaker device
+            self.send_parameters()
 
     # Method to update parameters for the selected pacing mode
     def update_parameters(self):
