@@ -58,11 +58,10 @@ class ApplicationWindow(QMainWindow):
         for field_name, field_widget in self.fields.items():
             if isinstance(field_widget, QComboBox):
                 if field_name == "Rate Smoothing":
-                    field_widget.addItems(["0 OFF", "3", "6", "9", "12", "15", "18", "21", "25"])
+                    field_widget.addItems(["0", "3", "6", "9", "12", "15", "18", "21", "25"])
                 elif field_name == "Activity Threshold":
                     field_widget.addItems([
-                        "1.13 V-Low", "1.25 Low", "1.4 Med-Low", "1.6 Med", "2 Med-High", 
-                        "2.4 High", "3 V-High"
+                        "1.13", "1.25", "1.4", "1.6", "2", "2.4", "3"
                     ])
                 current_value = str(getattr(self.parameter_manager, f"get{field_name.replace(' ', '')}")())
                 index = field_widget.findText(current_value, Qt.MatchFlag.MatchContains)
@@ -265,21 +264,17 @@ class ApplicationWindow(QMainWindow):
                 if value:
                     try:
                         set_method = getattr(self.parameter_manager, f"set{field_name.replace(' ', '')}")
-                        set_method(value)
+                        if field_name in ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Fixed AV Delay", "ARP", "VRP", "PVARP", "Reaction Time", "Response Factor", "Recovery Time"]:
+                            set_method(float(value))
+                        elif field_name in ["Atrial Amplitude", "Ventricular Amplitude", "Atrial Sensitivity", "Ventricular Sensitivity", "Activity Threshold"]:
+                            set_method(float(value))
+                        elif field_name == "Rate Smoothing":
+                            set_method(int(value))
+                        elif field_name == "Hysteresis":
+                            set_method(int(float(value)))
                     except TypeError:
                         errors += 1
-                        if "Rate Limit" in field_name:
-                            error_text += f"{field_name}: Please use numeric value input!."
-                        elif "Amplitude" in field_name:
-                            error_text += f"{field_name}: Please use numeric value input!."
-                        elif "Sensitivity" in field_name:
-                            error_text += f"{field_name}: Please use numeric value input!."
-                        elif "Pulse Width" in field_name:
-                            error_text += f"{field_name}: Please use numeric value input!."
-                        elif "Time" in field_name:
-                            error_text += f"{field_name}: Please use numeric value input!."
-                        else:
-                            error_text += f"{field_name}: Invalid type."
+                        error_text += f"{field_name}: Please use numeric value input!."
                     except IndexError:
                         errors += 1
                         if field_name == "Lower Rate Limit":
@@ -297,7 +292,7 @@ class ApplicationWindow(QMainWindow):
                         elif field_name == "ARP" or field_name == "VRP" or field_name == "PVARP":
                             error_text += f"{field_name}: Must be between 150 and 500 ms."
                         elif field_name == "Hysteresis":
-                            error_text += f"{field_name}: Must be the same with LRL."
+                            error_text += f"{field_name}: Must be between 0 and 175."
                         elif field_name == "Reaction Time":
                             error_text += f"{field_name}: Must be between 10 and 50 seconds."
                         elif field_name == "Response Factor":
@@ -361,13 +356,10 @@ class ApplicationWindow(QMainWindow):
             ser = serial.Serial(port=self.connected_port, baudrate=115200, timeout=1)
 
             # Define the header and structure format for sending data
-            header_format = '<2B'
-            data_format = '<4B8fHf3H'
+            header_format = '<B'  # Mode (uint8)
+            data_format = '<13fH6f'  
 
             # Prepare values for the header and parameters
-            header = struct.pack(header_format, 0x16, 0x55)
-
-            # Get the user parameters
             mode = self.get_mode_value(self.pacing_mode_combo.currentText())
             lrl = self.parameter_manager.getLowerRateLimit()
             url = self.parameter_manager.getUpperRateLimit()
@@ -381,13 +373,14 @@ class ApplicationWindow(QMainWindow):
             arp = self.parameter_manager.getARP()
             vrp = self.parameter_manager.getVRP()
             pvarp = self.parameter_manager.getPVARP()
-            act_thresh = float(self.parameter_manager.getActivityThreshold())
+            act_thresh = self.parameter_manager.getActivityThreshold()
             react_time = self.parameter_manager.getReactionTime()
             response_factor = self.parameter_manager.getResponseFactor()
             recovery_time = self.parameter_manager.getRecoveryTime()
 
-            # Pack the data 4B8fHf3H
-            data = struct.pack(data_format, mode, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
+            # Pack the data
+            header = struct.pack(header_format, mode)
+            data = struct.pack(data_format, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
 
             # Send the packed header and data
             full_packet = header + data
@@ -396,23 +389,31 @@ class ApplicationWindow(QMainWindow):
 
             # Wait for a response and read it
             time.sleep(0.5)
-            response_data = ser.read(48)  # Read response data length is 48 bytes as expected
+            response_data = ser.read(66)  # Read response data length is 66 bytes as expected
             ser.close()
 
-            # Unpack the response values
-            if len(response_data) != 48:
+            # Unpack the response values 
+            if len(response_data) != 66:
                 QMessageBox.warning(self, "Error", "Invalid data length received from pacemaker.")
                 return
 
-            # Unpack the response header and verify it
-            response_header = struct.unpack(header_format, response_data[:2])
-            if response_header != (0x16, 0x22):
-                QMessageBox.warning(self, "Error", "Invalid header received.")
-                return
-
-            # Unpack response parameters
-            response_values = struct.unpack(data_format, response_data[2:])
-            (modeV, lrlV, urlV, msrV, aaV, vaV, apwV, vpwV, asensV, vsensV, arpV, vrpV, pvarpV, act_threshV, react_timeV, response_factorV, recovery_timeV) = response_values
+            modeV = struct.unpack('B', response_data[0:2])
+            lrlV = struct.unpack('f', response_data[4:7])
+            urlV = struct.unpack('f', response_data[8:11])
+            msrV = struct.unpack('f', response_data[12:15])
+            aaV = struct.unpack('f', response_data[16:19])
+            vaV = struct.unpack('f', response_data[20:23])
+            apwV = struct.unpack('f', response_data[24:27])
+            vpwV = struct.unpack('f', response_data[28:31])
+            asensV = struct.unpack('f', response_data[32:35])
+            vsensV = struct.unpack('f', response_data[36:39])
+            arpV = struct.unpack('H', response_data[40:43])
+            vrpV = struct.unpack('H', response_data[44:47])
+            pvarpV = struct.unpack('H', response_data[48:49])
+            act_threshV = struct.unpack('f', response_data[50:53])
+            react_timeV = struct.unpack('f', response_data[54:57])
+            response_factorV = struct.unpack('f', response_data[58:61])
+            recovery_timeV = struct.unpack('f', response_data[62:65])
 
             # Print the data received for debugging
             print(f"Data received:")
