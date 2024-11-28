@@ -178,7 +178,7 @@ class ApplicationWindow(QMainWindow):
         self.egram_button.setFixedSize(150, 50)
         self.egram_button.clicked.connect(self.start_egram)
         button_layout.addWidget(self.egram_button, alignment=Qt.AlignmentFlag.AlignCenter)
-        
+
         # Connection Status Check at Bottom Right Corner
         connection_layout = QHBoxLayout()
         self.status_msg = QLabel("Device not connected")
@@ -203,13 +203,20 @@ class ApplicationWindow(QMainWindow):
         try:
             with open(self.users_file, 'rb') as file:
                 self.user_parameters = pickle.load(file)
+                print("Loaded user parameters:")
+                for user, params in self.user_parameters.items():
+                    print(f"User: {user}, Parameters: {params.__dict__}")
         except FileNotFoundError:
             self.user_parameters = {}
+            print("User data file not found. Creating new data structure.")
 
     def save_user_parameters(self):
         self.user_parameters[self.username] = self.parameter_manager
         with open(self.users_file, 'wb') as file:
             pickle.dump(self.user_parameters, file)
+        print("Saved user parameters:")
+        for user, params in self.user_parameters.items():
+            print(f"User: {user}, Parameters: {params.__dict__}")
 
     # Method to get relevant parameters for the selected pacing mode
     def get_relevant_parameters_for_mode(self, mode):
@@ -306,7 +313,7 @@ class ApplicationWindow(QMainWindow):
             self.save_user_parameters()
             QMessageBox.information(self, "Success", "Parameters successfully updated!")
             # After updating and saving the parameters, send them to the pacemaker device
-            self.send_parameters()
+            self.send_and_validate_parameters()
 
     # Method to update parameters for the selected pacing mode
     def update_parameters(self):
@@ -343,8 +350,8 @@ class ApplicationWindow(QMainWindow):
         self.status_msg.setText("Device not connected")
         self.status_msg.setStyleSheet("color: red;")
 
-    # Method to send the parameters via serial communication
-    def send_parameters(self):
+    # Method to send parameters via serial communication and validate the response
+    def send_and_validate_parameters(self):
         try:
             if not self.connected_port:
                 QMessageBox.warning(self, "Error", "Device not connected.")
@@ -354,14 +361,14 @@ class ApplicationWindow(QMainWindow):
             ser = serial.Serial(port=self.connected_port, baudrate=115200, timeout=1)
 
             # Define the header and structure format for sending data
-            header_format = '<2B'  # Header 
-            data_format = '<4B8fHf3H'  # Parameters
+            header_format = '<2B'
+            data_format = '<4B8fHf3H'
 
-            # Create the header
+            # Prepare values for the header and parameters
             header = struct.pack(header_format, 0x16, 0x55)
 
             # Get the user parameters
-            mode =self.get_mode_value(self.pacing_mode_combo.currentText())
+            mode = self.get_mode_value(self.pacing_mode_combo.currentText())
             lrl = self.parameter_manager.getLowerRateLimit()
             url = self.parameter_manager.getUpperRateLimit()
             msr = self.parameter_manager.getMaximumSensorRate()
@@ -382,87 +389,54 @@ class ApplicationWindow(QMainWindow):
             # Pack the data 4B8fHf3H
             data = struct.pack(data_format, mode, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
 
-            # Print the data sent 
-            print("Data being sent:")
-            print(f"Header: {[0x16, 0x55]}")
-            print(f"Mode: {mode}")
-            print(f"Lower Rate Limit: {lrl}")
-            print(f"Upper Rate Limit: {url}")
-            print(f"Maximum Sensor Rate: {msr}")
-            print(f"Atrial Amplitude: {aa}")
-            print(f"Ventricular Amplitude: {va}")
-            print(f"Atrial Pulse Width: {apw}")
-            print(f"Ventricular Pulse Width: {vpw}")
-            print(f"Atrial Sensitivity: {asens}")
-            print(f"Ventricular Sensitivity: {vsens}")
-            print(f"ARP: {arp}")
-            print(f"VRP: {vrp}")
-            print(f"PVARP: {pvarp}")
-            print(f"Activity Threshold: {act_thresh}")
-            print(f"Reaction Time: {react_time}")
-            print(f"Response Factor: {response_factor}")
-            print(f"Recovery Time: {recovery_time}")
+            # Send the packed header and data
+            full_packet = header + data
+            print(f"Packet Length: {len(full_packet)}")
+            ser.write(full_packet)
 
-            # Send the packed data
-            ser.write(header + data)
-
-            # Wait and then read response
+            # Wait for a response and read it
             time.sleep(0.5)
-            response_data = ser.read(48)  ################## Data Length is HERE!!!
-            self.read_parameters(response_data)
-
-            # Close the serial port
+            response_data = ser.read(48)  # Read response data length is 48 bytes as expected
             ser.close()
 
-        except serial.SerialException as e:
-            QMessageBox.warning(self, "Error", f"Serial Communication Error: {str(e)}")
-
-    # Method to read 
-    def read_parameters(self, response_data):
-        try:
+            # Unpack the response values
             if len(response_data) != 48:
-                raise ValueError("Invalid data length received from device.") ################## Data Length is HERE!!!
+                QMessageBox.warning(self, "Error", "Invalid data length received from pacemaker.")
+                return
 
-            
-            header_format = '<2B'  # Header 
-            data_format = '<4B8fHf3H'  # parameters
+            # Unpack the response header and verify it
+            response_header = struct.unpack(header_format, response_data[:2])
+            if response_header != (0x16, 0x22):
+                QMessageBox.warning(self, "Error", "Invalid header received.")
+                return
 
-            # Unpack header and verify it
-            header = struct.unpack(header_format, response_data[:2])
-            if header != (0x16, 0x22):
-                raise ValueError("Invalid header received.")
+            # Unpack response parameters
+            response_values = struct.unpack(data_format, response_data[2:])
+            (modeV, lrlV, urlV, msrV, aaV, vaV, apwV, vpwV, asensV, vsensV, arpV, vrpV, pvarpV, act_threshV, react_timeV, response_factorV, recovery_timeV) = response_values
 
-            # Unpack the data
-            unpacked_data = struct.unpack(data_format, response_data[2:])
+            # Print the data received for debugging
+            print(f"Data received:")
+            print(f"Mode: {modeV}, Lower Rate Limit: {lrlV}, Upper Rate Limit: {urlV}, Maximum Sensor Rate: {msrV}")
+            print(f"Atrial Amplitude: {aaV}, Ventricular Amplitude: {vaV}, Atrial Pulse Width: {apwV}, Ventricular Pulse Width: {vpwV}")
+            print(f"Atrial Sensitivity: {asensV}, Ventricular Sensitivity: {vsensV}, ARP: {arpV}, VRP: {vrpV}, PVARP: {pvarpV}")
+            print(f"Activity Threshold: {act_threshV}, Reaction Time: {react_timeV}, Response Factor: {response_factorV}, Recovery Time: {recovery_timeV}")
 
-            # Extract each value
-            (mode, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp,
-             pvarp, act_thresh, react_time, response_factor, recovery_time) = unpacked_data
-
-            # Print the data received 
-            print("Data received:")
-            print(f"Mode: {mode}")
-            print(f"Lower Rate Limit: {lrl}")
-            print(f"Upper Rate Limit: {url}")
-            print(f"Maximum Sensor Rate: {msr}")
-            print(f"Atrial Amplitude: {aa}")
-            print(f"Ventricular Amplitude: {va}")
-            print(f"Atrial Pulse Width: {apw}")
-            print(f"Ventricular Pulse Width: {vpw}")
-            print(f"Atrial Sensitivity: {asens}")
-            print(f"Ventricular Sensitivity: {vsens}")
-            print(f"ARP: {arp}")
-            print(f"VRP: {vrp}")
-            print(f"PVARP: {pvarp}")
-            print(f"Activity Threshold: {act_thresh}")
-            print(f"Reaction Time: {react_time}")
-            print(f"Response Factor: {response_factor}")
-            print(f"Recovery Time: {recovery_time}")
+            # Validate the response data
+            if (modeV == mode and lrlV == lrl and urlV == url and msrV == msr and abs(aaV - aa) < 0.01 and
+                    abs(vaV - va) < 0.01 and apwV == apw and vpwV == vpw and asensV == asens and vsensV == vsens and
+                    arpV == arp and vrpV == vrp and pvarpV == pvarp and abs(act_threshV - act_thresh) < 0.01 and
+                    react_timeV == react_time and response_factorV == response_factor and recovery_timeV == recovery_time):
+                QMessageBox.information(self, "Success", "Parameters set and stored successfully.")
+            else:
+                QMessageBox.warning(self, "Error", "Some or all parameters did not store properly, please check pacemaker version compatibility.")
 
         except struct.error as e:
-            QMessageBox.warning(self, "Error", f"Data Unpacking Error: {str(e)}")
-        except ValueError as e:
-            QMessageBox.warning(self, "Error", f"Data Validation Error: {str(e)}")
+            QMessageBox.warning(self, "Error", f"Data Packing/Unpacking Error: {str(e)}")
+        except serial.SerialException as e:
+            QMessageBox.warning(self, "Error", f"Serial Communication Error: {str(e)}")
+        finally:
+            if ser.is_open:
+                ser.close()
 
     def start_egram(self):
         if self.connected_port:

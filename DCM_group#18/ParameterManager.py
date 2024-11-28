@@ -4,10 +4,10 @@ class ParameterManager:
         self.__url = 120
         self.__msr = 120
         self.__fixed_av_delay = 150
-        self.__atrial_amplitude = 5
-        self.__ventricular_amplitude = 5
-        self.__atrial_pulse_width = 1
-        self.__ventricular_pulse_width = 1
+        self.__atrial_amplitude = 5.0
+        self.__ventricular_amplitude = 5.0
+        self.__atrial_pulse_width = 1.0
+        self.__ventricular_pulse_width = 1.0
         self.__atrial_sensitivity = 0.1
         self.__ventricular_sensitivity = 0.1
         self.__arp = 250
@@ -15,10 +15,10 @@ class ParameterManager:
         self.__pvarp = 250
         self.__hysteresis = 0
         self.__rate_smoothing = 0
-        self.__activity_threshold = 1.6 # Med
-        self.__reaction_time = 30
+        self.__activity_threshold = 1.6  # Med
+        self.__reaction_time = 30.0
         self.__response_factor = 8
-        self.__recovery_time = 300  # sec = 5 min
+        self.__recovery_time = 300.0  # sec = 5 min
 
     def getLowerRateLimit(self):
         return self.__lrl
@@ -33,10 +33,10 @@ class ParameterManager:
         return self.__fixed_av_delay
 
     def getAtrialAmplitude(self):
-        return self.__atrial_amplitude if self.__atrial_amplitude != 0 else 0
+        return self.__atrial_amplitude if self.__atrial_amplitude != 0 else 0.0
 
     def getVentricularAmplitude(self):
-        return self.__ventricular_amplitude if self.__ventricular_amplitude != 0 else 0
+        return self.__ventricular_amplitude if self.__ventricular_amplitude != 0 else 0.0
 
     def getAtrialPulseWidth(self):
         return self.__atrial_pulse_width
@@ -66,23 +66,7 @@ class ParameterManager:
         return self.__rate_smoothing
 
     def getActivityThreshold(self):
-        def getActivityThreshold(self):
-            if self.__activity_threshold - 1.13 < 0.01:
-                return 1.13
-            elif self.__activity_threshold - 1.25 < 0.01:
-                return 1.25
-            elif self.__activity_threshold - 1.4 < 0.01:
-                return 1.4
-            elif self.__activity_threshold - 1.6 < 0.01:
-                return 1.6
-            elif self.__activity_threshold == 2:
-                return 2
-            elif self.__activity_threshold - 2.4 < 0.01:
-                return 2.4
-            elif self.__activity_threshold == 3:
-                return 3
-        return 0
-
+        return self.__activity_threshold
 
     def getReactionTime(self):
         return self.__reaction_time
@@ -91,7 +75,7 @@ class ParameterManager:
         return self.__response_factor
 
     def getRecoveryTime(self):
-        return round(self.__recovery_time / 60)
+        return self.__recovery_time / 60.0
 
     def setLowerRateLimit(self, val):
         if self.__is_num(val):
@@ -128,7 +112,7 @@ class ParameterManager:
     def setFixedAVDelay(self, val):
         if self.__is_num(val):
             if 70 <= val <= 300:
-                self.__fixed_av_delay = val
+                self.__fixed_av_delay = float(val)
             else:
                 raise IndexError
         else:
@@ -136,14 +120,14 @@ class ParameterManager:
 
     def setAtrialAmplitude(self, val):
         if str(val).casefold() == 'off'.casefold():
-            self.__atrial_amplitude = 0
+            self.__atrial_amplitude = 0.0
             return
         if self.__is_num(val):
             num = round(float(val), 1)
             if num <= 5.0 and num >= 0.1:
                 self.__atrial_amplitude = num
             elif round(float(val), 1) == 0:
-                self.__atrial_amplitude = 0
+                self.__atrial_amplitude = 0.0
             else:
                 raise IndexError
         else:
@@ -151,14 +135,14 @@ class ParameterManager:
 
     def setVentricularAmplitude(self, val):
         if str(val).casefold() == 'off'.casefold():
-            self.__ventricular_amplitude = 0
+            self.__ventricular_amplitude = 0.0
             return
         if self.__is_num(val):
             num = round(float(val), 1)
             if num <= 5.0 and num >= 0.1:
                 self.__ventricular_amplitude = num
             elif round(float(val), 1) == 0:
-                self.__ventricular_amplitude = 0
+                self.__ventricular_amplitude = 0.0
             else:
                 raise IndexError
         else:
@@ -167,7 +151,7 @@ class ParameterManager:
     def setAtrialPulseWidth(self, val):
         if self.__is_num(val):
             if 1 <= round(float(val)) <= 30:
-                self.__atrial_pulse_width = round(float(val))
+                self.__atrial_pulse_width = float(round(float(val)))
             else:
                 raise IndexError
         else:
@@ -176,7 +160,7 @@ class ParameterManager:
     def setVentricularPulseWidth(self, val):
         if self.__is_num(val):
             if 1 <= round(float(val)) <= 30:
-                self.__ventricular_pulse_width = round(float(val))
+                self.__ventricular_pulse_width = float(round(float(val)))
             else:
                 raise IndexError
         else:
@@ -251,8 +235,8 @@ class ParameterManager:
     def setReactionTime(self, val):
         if self.__is_num(val):
             num = 10 * round(float(val) / 10)
-            if 10 <= num <= 50:
-                self.__reaction_time = num
+            if 10.0 <= num <= 50.0:
+                self.__reaction_time = float(num)
             else:
                 raise IndexError
         else:
@@ -269,8 +253,8 @@ class ParameterManager:
 
     def setRecoveryTime(self, val):
         if self.__is_num(val):
-            if 2 <= round(float(val)) <= 16:
-                self.__recovery_time = round(float(val)) * 60
+            if 2.0 <= round(float(val)) <= 16.0:
+                self.__recovery_time = float(round(float(val)) * 60)
             else:
                 raise IndexError
         else:
