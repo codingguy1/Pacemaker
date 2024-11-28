@@ -72,16 +72,24 @@ class EgramPlot(QMainWindow):
             try:
                 with serial.Serial(port=self.port, baudrate=115200, timeout=1) as ser:
                     # Request data from the pacemaker
-                    ser.write(struct.pack('<2B10fH', 0x16, 0x22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-                    serial_data = ser.read(16)
+                    ser.write(struct.pack('<2B', 0x16, 0x22))
+                    serial_data = ser.read(66)
+                    if len(serial_data) != 66:
+                        raise serial.SerialException("Incomplete data received.")
             except (serial.SerialException, FileNotFoundError):
                 QMessageBox.warning(self, "Error", "Pacemaker not connected")
                 self.close()
                 return
 
             # Process received data
-            a_signal = -6.6 * (struct.unpack('d', serial_data[0:8])[0] - 0.5)
-            v_signal = -6.6 * (struct.unpack('d', serial_data[8:16])[0] - 0.5)
+            try:
+                # Unpack the response values based on the expected format from the ApplicationWindow class
+                modeV = struct.unpack('B', serial_data[0:1])[0]
+                a_signal = -6.6 * (struct.unpack('<f', serial_data[4:7])[0] - 0.5)
+                v_signal = -6.6 * (struct.unpack('<f', serial_data[8:11])[0] - 0.5)
+            except struct.error:
+                QMessageBox.warning(self, "Error", "Error unpacking data")
+                return
 
             # Update data arrays
             if len(self.aData) < 300:
@@ -99,10 +107,8 @@ class EgramPlot(QMainWindow):
                 self.plotV.set_xlim(self.tData[0], self.tData[-1])
 
             # Update plot lines
-            self.linesA.set_xdata(self.tData)
-            self.linesA.set_ydata(self.aData)
-            self.linesV.set_xdata(self.tData)
-            self.linesV.set_ydata(self.vData)
+            self.linesA.set_data(self.tData, self.aData)
+            self.linesV.set_data(self.tData, self.vData)
             self.canvas.draw()
 
         QTimer.singleShot(5, self.plot)
