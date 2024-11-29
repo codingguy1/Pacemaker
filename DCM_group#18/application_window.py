@@ -357,6 +357,7 @@ class ApplicationWindow(QMainWindow):
 
     # Method to send parameters via serial communication and validate the response
     def send_and_validate_parameters(self):
+        ser = None
         try:
             if not self.connected_port:
                 QMessageBox.warning(self, "Error", "Device not connected.")
@@ -446,13 +447,15 @@ class ApplicationWindow(QMainWindow):
         except serial.SerialException as e:
             QMessageBox.warning(self, "Error", f"Serial Communication Error: {str(e)}")
         finally:
-            if ser.is_open:
+            if ser and ser.is_open:
                 ser.close()
 
+    # Method to start the Egram plot
     def start_egram(self):
         if self.connected_port:
+            # Pass the connected port to the EgramPlot instance and show the window
             self.egram_plot = EgramPlot(port=self.connected_port)  # Create and start the Egram plot
-            self.egram_plot.start()
+            self.egram_plot.show()  # Display the plot window
         else:
             QMessageBox.warning(self, "Error", "Device not connected. Please connect to start Egram.")
 
