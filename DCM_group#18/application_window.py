@@ -327,10 +327,20 @@ class ApplicationWindow(QMainWindow):
                 label.setVisible(is_visible)
                 field_widget.setVisible(is_visible)
 
-    # Method to check connection status
+    # Method to check connection status, updated for macOS support
     def check_connection_status(self):
-        common_ports = ["COM6", "COM5", "COM4", "COM3"]
-        for port in common_ports:
+        # List all available serial ports
+        ports = serial.tools.list_ports.comports()
+        available_ports = [port.device for port in ports]
+
+        # Common ports for macOS, Linux, and Windows
+        common_ports = ["COM6", "COM5", "COM4", "COM3"]  # Windows
+        mac_ports = ["/dev/tty.usbserial", "/dev/tty.usbmodem", "/dev/cu.usbserial", "/dev/cu.usbmodem"]  # macOS
+        
+        # Add common macOS ports to the list of ports to check
+        all_ports_to_check = available_ports + common_ports + mac_ports
+
+        for port in all_ports_to_check:
             try:
                 ser = serial.Serial(port=port, baudrate=115200, timeout=1)
                 ser.close()
@@ -449,3 +459,4 @@ class ApplicationWindow(QMainWindow):
     # Method to exit the application
     def exit_program(self):
         QApplication.quit()
+
