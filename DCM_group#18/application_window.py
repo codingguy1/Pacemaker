@@ -367,10 +367,13 @@ class ApplicationWindow(QMainWindow):
             ser = serial.Serial(port=self.connected_port, baudrate=115200, timeout=1)
 
             # Define the header and structure format for sending data
-            header_format = '<B'  # Mode (uint8)
+            header_format = '<2B'  # Two bytes for custom header (0x16, 0x55)
             data_format = '<13fH6f'  
 
             # Prepare values for the header and parameters
+            header_1 = 0x16
+            header_2 = 0x55
+
             mode = self.get_mode_value(self.pacing_mode_combo.currentText())
             lrl = self.parameter_manager.getLowerRateLimit()
             url = self.parameter_manager.getUpperRateLimit()
@@ -390,7 +393,7 @@ class ApplicationWindow(QMainWindow):
             recovery_time = self.parameter_manager.getRecoveryTime()
 
             # Pack the data
-            header = struct.pack(header_format, mode)
+            header = struct.pack(header_format, header_1, header_2)  # Add 0x16 and 0x55 as the first two bytes
             data = struct.pack(data_format, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
 
             # Send the packed header and data
@@ -407,7 +410,7 @@ class ApplicationWindow(QMainWindow):
             if len(response_data) != 66:
                 QMessageBox.warning(self, "Error", "Invalid data length received from pacemaker.")
                 return
-
+        
             modeV = struct.unpack('B', response_data[0:2])
             lrlV = struct.unpack('f', response_data[4:7])
             urlV = struct.unpack('f', response_data[8:11])
