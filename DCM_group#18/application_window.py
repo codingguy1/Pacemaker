@@ -7,7 +7,7 @@ import pickle
 from ParameterManager import ParameterManager  
 import struct
 import time
-from egram_plot import EgramPlot  # Import the new EgramPlot class
+from egram_plot import EgramPlot  
 
 # Application window for pacemaker
 class ApplicationWindow(QMainWindow):
@@ -121,12 +121,10 @@ class ApplicationWindow(QMainWindow):
 
         # Create a main horizontal layout for two columns
         param_main_layout = QHBoxLayout()
-
-        # Create left and right vertical layouts for the two sets of fields
         left_param_layout = QVBoxLayout()
         right_param_layout = QVBoxLayout()
 
-        # Add fields to the left and right layouts
+        # Add fields for parameter display
         for i, (field_name, field_widget) in enumerate(self.fields.items()):
             label = QLabel(f"{field_name}:")
             label.setFont(QFont('Arial', 10))
@@ -146,7 +144,7 @@ class ApplicationWindow(QMainWindow):
         # Add to the main horizontal layout
         param_main_layout.addStretch()
         param_main_layout.addLayout(left_param_layout)
-        param_main_layout.addSpacing(50)  # Add spacing between columns for better separation
+        param_main_layout.addSpacing(50) 
         param_main_layout.addLayout(right_param_layout)
         param_main_layout.addStretch()
 
@@ -159,7 +157,7 @@ class ApplicationWindow(QMainWindow):
         # Layout for Apply Button
         button_layout = QHBoxLayout()
 
-        # Apply Button for Parameter Validation / Save parameter
+        # Apply Button for Parameter 
         self.apply_button = QPushButton("Apply")
         self.apply_button.setFixedSize(150, 50)
         self.apply_button.clicked.connect(self.apply_parameters)
@@ -172,13 +170,13 @@ class ApplicationWindow(QMainWindow):
         # Spacer for better display
         main_layout.addSpacing(20)
         
-        # Egram Button to start real-time graphing of atrial/ventricular signals
+        # Egram Button 
         self.egram_button = QPushButton("Egram")
         self.egram_button.setFixedSize(150, 50)
         self.egram_button.clicked.connect(self.start_egram)
         button_layout.addWidget(self.egram_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Connection Status Check at Bottom Right Corner
+        # Connection Status Check Button
         connection_layout = QHBoxLayout()
         self.status_msg = QLabel("Device not connected")
         self.status_msg.setFont(QFont('Arial', 12))
@@ -307,7 +305,7 @@ class ApplicationWindow(QMainWindow):
         else:
             self.save_user_parameters()
             QMessageBox.information(self, "Success", "Parameters successfully updated!")
-            # After updating and saving the parameters, send them to the pacemaker device
+            # Send inputted data to the pacemaker device
             self.send_and_validate_parameters()
 
     # Method to update parameters for the selected pacing mode
@@ -327,17 +325,17 @@ class ApplicationWindow(QMainWindow):
                 label.setVisible(is_visible)
                 field_widget.setVisible(is_visible)
 
-    # Method to check connection status, updated for macOS support
+    # Method to check connection status
     def check_connection_status(self):
-        # List all available serial ports
+
         ports = serial.tools.list_ports.comports()
         available_ports = [port.device for port in ports]
 
-        # Common ports for macOS, Linux, and Windows
-        common_ports = ["COM6", "COM5", "COM4", "COM3"]  # Windows
+        # Common ports for macOS and Windows
+        common_ports = ["COM9", "COM8", "COM7", "COM6", "COM5", "COM4", "COM3"]  # Windows
         mac_ports = ["/dev/tty.usbserial", "/dev/tty.usbmodem", "/dev/cu.usbserial", "/dev/cu.usbmodem"]  # macOS
         
-        # Add common macOS ports to the list of ports to check
+        # Add macOS ports to the list of ports to check
         all_ports_to_check = available_ports + common_ports + mac_ports
 
         for port in all_ports_to_check:
@@ -367,12 +365,7 @@ class ApplicationWindow(QMainWindow):
             ser = serial.Serial(port=self.connected_port, baudrate=115200, timeout=1)
 
             # Define the header and structure format for sending data
-            header_format = '<2B'  # Two bytes for custom header (0x16, 0x55)
-            data_format = '<13fH6f'  
-
-            # Prepare values for the header and parameters
-            header_1 = 0x16
-            header_2 = 0x55
+            data_format = '<3B13fH6f'  
 
             mode = self.get_mode_value(self.pacing_mode_combo.currentText())
             lrl = self.parameter_manager.getLowerRateLimit()
@@ -393,25 +386,22 @@ class ApplicationWindow(QMainWindow):
             recovery_time = self.parameter_manager.getRecoveryTime()
 
             # Pack the data
-            header = struct.pack(header_format, header_1, header_2)  # Add 0x16 and 0x55 as the first two bytes
-            data = struct.pack(data_format, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
-
-            # Send the packed header and data
-            full_packet = header + data
-            print(f"Packet Length: {len(full_packet)}")
-            ser.write(full_packet)
+            data_packet = struct.pack(data_format, 0x16, 0x55, mode, lrl, url, msr, aa, va, apw, vpw, asens, vsens, arp, vrp, pvarp, act_thresh, react_time, response_factor, recovery_time)
+            print(f"Packet Length: {len(data_packet)}")
+            ser.write(data_packet)
 
             # Wait for a response and read it
             time.sleep(0.5)
-            response_data = ser.read(66)  # Read response data length is 66 bytes as expected
+            response_data = ser.read(71)  ############# DATA LENGTH IS HERE
             ser.close()
 
-            # Unpack the response values 
-            if len(response_data) != 66:
+            # Debug data type
+            if len(response_data) != 71:
                 QMessageBox.warning(self, "Error", "Invalid data length received from pacemaker.")
                 return
-        
-            modeV = struct.unpack('B', response_data[0:2])
+            
+            # Unpack the response values 
+            modeV = struct.unpack('B', response_data[0:3])
             lrlV = struct.unpack('f', response_data[4:7])
             urlV = struct.unpack('f', response_data[8:11])
             msrV = struct.unpack('f', response_data[12:15])
@@ -429,7 +419,7 @@ class ApplicationWindow(QMainWindow):
             response_factorV = struct.unpack('f', response_data[58:61])
             recovery_timeV = struct.unpack('f', response_data[62:65])
 
-            # Print the data received for debugging
+            # Debugging recived data
             print(f"Data received:")
             print(f"Mode: {modeV}, Lower Rate Limit: {lrlV}, Upper Rate Limit: {urlV}, Maximum Sensor Rate: {msrV}")
             print(f"Atrial Amplitude: {aaV}, Ventricular Amplitude: {vaV}, Atrial Pulse Width: {apwV}, Ventricular Pulse Width: {vpwV}")
@@ -443,7 +433,7 @@ class ApplicationWindow(QMainWindow):
                     react_timeV == react_time and response_factorV == response_factor and recovery_timeV == recovery_time):
                 QMessageBox.information(self, "Success", "Parameters set and stored successfully.")
             else:
-                QMessageBox.warning(self, "Error", "Some or all parameters did not store properly, please check pacemaker version compatibility.")
+                QMessageBox.warning(self, "Error", "Some or all parameters did not store properly.")
 
         except struct.error as e:
             QMessageBox.warning(self, "Error", f"Data Packing/Unpacking Error: {str(e)}")
@@ -456,9 +446,9 @@ class ApplicationWindow(QMainWindow):
     # Method to start the Egram plot
     def start_egram(self):
         if self.connected_port:
-            # Pass the connected port to the EgramPlot instance and show the window
-            self.egram_plot = EgramPlot(port=self.connected_port)  # Create and start the Egram plot
-            self.egram_plot.show()  # Display the plot window
+            # Pass the connected port to the EgramPlot instance 
+            self.egram_plot = EgramPlot(port=self.connected_port) 
+            self.egram_plot.show()  
         else:
             QMessageBox.warning(self, "Error", "Device not connected. Please connect to start Egram.")
 

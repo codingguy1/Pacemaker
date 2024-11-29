@@ -63,7 +63,7 @@ class MainWindow(QMainWindow):
         shortcut.activated.connect(self.login.click)
 
         # Create a layout and add the widgets
-        main_layout = QVBoxLayout()  # Vertical layout
+        main_layout = QVBoxLayout() 
 
         # Create a top and horizontal layout to hold images
         img_layout = QHBoxLayout()
@@ -183,7 +183,6 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Error", "Please fill in both fields.")
 
     def open_application_window(self, username):
-        # Don't hide the log in window so more user can be logged in
         # Open the main application window and pass the username
         self.app_window = ApplicationWindow(username)
         self.app_window.show()
